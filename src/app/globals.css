@@ -3,24 +3,48 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card: #f4f3f1;
+  --muted-foreground: #6b6b6b;
+  --brand: #5229CD;
+  --brand-foreground: #0a0a0a;
+  --destructive: #e5484d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-destructive: var(--destructive);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-neue: var(--font-neue-montreal);
+  --font-neue-bold: var(--font-neue-montreal-bold);
+  --font-baskerville: var(--font-libre-baskerville);
+
+  /* Escala tipográfica centralizada — fluida con clamp() */
+  --text-title: clamp(2.5rem, 5.5vw, 4.25rem);
+  --text-title--line-height: 1.02;
+  --text-title--letter-spacing: -0.02em;
+
+  --text-body: clamp(1.0625rem, 1.4vw, 1.375rem);
+  --text-body--line-height: 1.55;
+
+  --text-small: 1rem;
+  --text-small--line-height: 1.4;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #EDEDED;
+    --foreground: #000000;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-neue), sans-serif;
 }
