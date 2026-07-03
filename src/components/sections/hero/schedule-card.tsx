@@ -58,6 +58,7 @@ export function ScheduleCard() {
           src={`${images.hero}/Schedule.png`}
           alt="Schedule preview"
           fill
+          sizes="(min-width: 640px) 240px, 0px"
           className="object-cover"
           draggable={false}
         />
