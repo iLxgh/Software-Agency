@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { neueMontreal, neueMontrealBold, libreBaskerville } from "@/lib/fonts";
+import { NoiseBackground } from "@/components/ui/noise-background";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${neueMontreal.variable} ${neueMontrealBold.variable} ${libreBaskerville.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <NoiseBackground />
+        {children}
+      </body>
     </html>
   );
 }
