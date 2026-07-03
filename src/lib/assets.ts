@@ -8,6 +8,7 @@ export const images = {
   logos: "/images/logos",
   icons: "/images/icons",
   general: "/images/general",
+  founder: "/images/about",
 } as const;
 
 export const media = {
