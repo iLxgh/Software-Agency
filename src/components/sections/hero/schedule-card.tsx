@@ -8,6 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 import { IconBadge } from "@/components/ui/icon-badge";
 import { images } from "@/lib/assets";
 import { ENTRANCE } from "@/lib/motion";
+import { useArrowHover } from "@/lib/use-arrow-hover";
 
 gsap.registerPlugin(useGSAP);
 
@@ -32,10 +33,33 @@ export function ScheduleCard() {
     { scope: cardRef }
   );
 
+  // Recorrido de la flecha al hacer hover sobre la tarjeta.
+  useArrowHover(cardRef, { direction: "up-right" });
+
+  const onEnter = () => {
+    gsap.to(cardRef.current, {
+      scale: 1.04,
+      duration: 0.55,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  };
+
+  const onLeave = () => {
+    gsap.to(cardRef.current, {
+      scale: 1,
+      duration: 0.55,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  };
+
   return (
     <div
       ref={cardRef}
-      className="flex text-black w-full max-w-md overflow-hidden rounded-2xl bg-card shadow-lg"
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="flex text-black w-full max-w-md cursor-pointer overflow-hidden rounded-2xl bg-card shadow-[0_0_24px_rgba(0,0,0,0.12)]"
     >
       <div className="flex flex-col justify-between p-5">
         <p className="text-body font-semibold leading-tight text-balance">
@@ -46,7 +70,7 @@ export function ScheduleCard() {
           <IconBadge
             icon={ArrowUpRight}
             size="lg"
-            className="text-white"
+            className="overflow-hidden text-white"
             animateIn
             delay={ENTRANCE.icon.card}
           />

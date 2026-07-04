@@ -8,11 +8,18 @@ import { IconLink } from "@/components/ui/icon-link";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { ScheduleCard } from "./schedule-card";
 import { ENTRANCE } from "@/lib/motion";
+import { useMagnetic } from "@/lib/use-magnetic";
+import { useArrowHover } from "@/lib/use-arrow-hover";
 
 gsap.registerPlugin(useGSAP);
 
 export function HeroContent() {
   const checkRef = useRef<HTMLSpanElement>(null);
+  const discoverRef = useRef<HTMLAnchorElement>(null);
+
+  useMagnetic(discoverRef);
+  // La flecha apunta hacia abajo: baja y regresa desde arriba.
+  useArrowHover(discoverRef, { direction: "down" });
 
   useGSAP(
     () => {
@@ -77,6 +84,7 @@ export function HeroContent() {
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-8">
         <IconLink
+          ref={discoverRef}
           href="#"
           icon={ArrowDown}
           iconSize="lg"

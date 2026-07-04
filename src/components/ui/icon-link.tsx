@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
 import type { LucideIcon } from "lucide-react";
 import { IconBadge } from "./icon-badge";
 import { cx, type IconGlyphSize, type IconGlyphVariant } from "./icon-glyph-styles";
@@ -12,6 +12,7 @@ type IconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   /** Retraso del pop del ícono, en segundos. */
   iconDelay?: number;
   children: ReactNode;
+  ref?: Ref<HTMLAnchorElement>;
 };
 
 export function IconLink({
@@ -22,10 +23,15 @@ export function IconLink({
   iconDelay = 0,
   children,
   className,
+  ref,
   ...props
 }: IconLinkProps) {
   return (
-    <a className={cx("flex items-center gap-3 font-semibold", className)} {...props}>
+    <a
+      ref={ref}
+      className={cx("flex items-center gap-3 font-semibold", className)}
+      {...props}
+    >
       {children}
       <IconBadge
         icon={icon}

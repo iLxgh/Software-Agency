@@ -1,5 +1,5 @@
 export type IconGlyphSize = "sm" | "md" | "lg";
-export type IconGlyphVariant = "brand" | "solid";
+export type IconGlyphVariant = "brand" | "solid" | "muted";
 
 export const iconGlyphSizeClasses: Record<IconGlyphSize, string> = {
   sm: "size-7",
@@ -16,6 +16,7 @@ export const iconGlyphIconSizeClasses: Record<IconGlyphSize, string> = {
 export const iconGlyphVariantClasses: Record<IconGlyphVariant, string> = {
   brand: "bg-brand text-brand-foreground",
   solid: "bg-foreground text-background",
+  muted: "bg-foreground/10 text-foreground",
 };
 
 export function cx(...classes: Array<string | undefined | false>) {

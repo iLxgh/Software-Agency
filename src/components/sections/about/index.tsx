@@ -260,9 +260,14 @@ export function About() {
   return (
     <section
       ref={sectionRef}
-      className="relative border-t border-foreground/20 text-foreground"
+      className="relative text-foreground"
       aria-label="About BLOXTEK"
     >
+      {/* divisor: respeta el ancho del contenedor */}
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-foreground/20" />
+      </div>
+
       <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[320px_1fr] lg:px-8 lg:py-14">
         {/* ---- PANEL IZQUIERDO: slider (rota) ---- */}
         <div className="flex flex-col gap-10 border-b border-foreground/15 pb-10 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-23">

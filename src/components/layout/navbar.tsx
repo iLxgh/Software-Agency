@@ -8,6 +8,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { IconLink } from "@/components/ui/icon-link";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { ENTRANCE } from "@/lib/motion";
+import { useArrowHover } from "@/lib/use-arrow-hover";
 
 gsap.registerPlugin(useGSAP);
 
@@ -15,6 +16,9 @@ const navLinks = ["About", "Work", "Services", "Process"];
 
 export function Navbar() {
   const navRef = useRef<HTMLElement>(null);
+  const talkRef = useRef<HTMLAnchorElement>(null);
+
+  useArrowHover(talkRef, { direction: "up-right" });
 
   useGSAP(
     () => {
@@ -38,7 +42,7 @@ export function Navbar() {
     <header className="flex justify-center pt-4 sm:pt-6 text-black">
       <nav
         ref={navRef}
-        className="flex w-full max-w-4xl items-center gap-4 rounded-2xl bg-card px-5 py-3 shadow-sm sm:px-6"
+        className="flex w-full max-w-4xl items-center gap-4 rounded-2xl bg-card px-5 py-3 shadow-[0_0_24px_rgba(0,0,0,0.12)] sm:px-6"
       >
         <a href="#" className="text-xl font-extrabold tracking-tight">
           <AnimatedText as="span" delay={ENTRANCE.navText}>
@@ -66,6 +70,7 @@ export function Navbar() {
 
         <div className="ml-auto flex items-center gap-3 md:ml-0">
           <IconLink
+            ref={talkRef}
             href="#"
             icon={ArrowUpRight}
             iconAnimateIn
