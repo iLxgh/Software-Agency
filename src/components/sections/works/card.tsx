@@ -18,6 +18,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const statValueRef = useRef<HTMLSpanElement>(null);
+  const statBoxRef = useRef<HTMLDivElement>(null);
   const statLabelRef = useRef<HTMLParagraphElement>(null);
   const hoverTlRef = useRef<gsap.core.Timeline | null>(null);
   // El hover solo se habilita cuando la entrada de la card terminó.
@@ -31,21 +32,32 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
       ).matches;
       if (reduce) return;
 
-      // Parallax en Y ligado al scroll: al bajar la imagen baja, al subir sube.
-      gsap.fromTo(
-        imgRef.current,
-        { yPercent: -20 },
-        {
-          yPercent: 20,
-          ease: "none",
-          scrollTrigger: {
-            trigger: frameRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+      // Parallax ligado al scroll. Se anima `object-position` (no un transform):
+      // así paneamos DENTRO del recorte de object-cover, aprovechando el alto
+      // real de la imagen sin exponer bordes ni recortar de más. object-cover
+      // siempre cubre el marco; object-position solo elige qué parte se ve.
+      // El rango 35%→65% es la intensidad (0%/100% = borde real de la imagen).
+      const img = imgRef.current?.querySelector("img");
+      if (img) {
+        const pos = { y: 50 };
+        gsap.fromTo(
+          pos,
+          { y: 35 },
+          {
+            y: 65,
+            ease: "none",
+            onUpdate: () => {
+              img.style.objectPosition = `50% ${pos.y}%`;
+            },
+            scrollTrigger: {
+              trigger: frameRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
           },
-        },
-      );
+        );
+      }
 
       // --- Hover: blur/oscurecido de la base + reveal de la imagen respectiva ---
       const base = imgRef.current;
@@ -105,6 +117,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
       ).matches;
 
       const frame = frameRef.current;
+      const statBox = statBoxRef.current;
       const textEls = [
         titleRef.current,
         descRef.current,
@@ -114,7 +127,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
       if (!frame) return;
 
       // Oculta antes del primer paint (solo con JS) para evitar el flash.
-      gsap.set([frame, ...textEls], { autoAlpha: 0 });
+      gsap.set([frame, statBox, ...textEls], { autoAlpha: 0 });
 
       let splits: SplitText[] = [];
       let tl: gsap.core.Timeline | null = null;
@@ -131,14 +144,14 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
         gsap.set(textEls, { autoAlpha: 1 });
 
         if (reduce) {
-          gsap.set(frame, { autoAlpha: 1 });
+          gsap.set([frame, statBox], { autoAlpha: 1 });
           splits.forEach((s) => s.revert());
           enteredRef.current = true;
           return;
         }
 
-        // Restaura el valor natural para que el `from` de la imagen anime 0 -> 1.
-        gsap.set(frame, { autoAlpha: 1 });
+        // Restaura el valor natural para que los `from` de abajo animen 0 -> 1.
+        gsap.set([frame, statBox], { autoAlpha: 1 });
 
         tl = gsap.timeline({
           scrollTrigger: { trigger: rootRef.current, start: "top 80%" },
@@ -171,11 +184,23 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
             { yPercent: 100, duration: 0.9, stagger: 0.04, ease: "power3.out" },
             "-=0.6",
           )
-          // Stat: valor
+          // Stat: recuadro (crece desde la izquierda con mini rebote)
+          .from(
+            statBox,
+            {
+              scaleX: 0,
+              autoAlpha: 0,
+              transformOrigin: "left center",
+              duration: 0.6,
+              ease: "back.out(1.8)",
+            },
+            "-=0.45",
+          )
+          // Stat: valor (sube dentro del recuadro)
           .from(
             splits[2].words,
             { yPercent: 100, duration: 0.8, stagger: 0.05, ease: "power3.out" },
-            "-=0.6",
+            "-=0.3",
           )
           // Stat: etiqueta
           .from(
@@ -239,21 +264,29 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
 
         <p
           ref={descRef}
-          className="mb-12 font-neue text-base leading-relaxed text-white/50"
+          className="mb-12 font-neue text-body leading-relaxed text-white/50"
         >
           {description}
         </p>
 
         <div className="mt-auto lg:mt-0">
-          <span
-            ref={statValueRef}
-            className="mb-3 inline-block rounded-lg bg-white/10 px-3 py-1 font-neue-bold text-lg text-white"
-          >
-            {stat.value}
-          </span>
+          {/* Recuadro como div propio (detrás del texto) para animarlo aparte. */}
+          <div className="relative mb-3 inline-block px-3 py-1">
+            <div
+              ref={statBoxRef}
+              aria-hidden
+              className="absolute inset-0 rounded-lg bg-[#717171]"
+            />
+            <span
+              ref={statValueRef}
+              className="relative font-neue-bold text-lg text-white"
+            >
+              {stat.value}
+            </span>
+          </div>
           <p
             ref={statLabelRef}
-            className="font-neue text-sm leading-tight text-white/50 whitespace-pre-line"
+            className="font-neue text-sm leading-tight text-white whitespace-pre-line"
           >
             {stat.label}
           </p>
