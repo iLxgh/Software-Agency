@@ -2,6 +2,8 @@ import { images } from "@/lib/assets";
 
 export type WorkCard = {
   image: string;
+  /** Imagen que se revela al hacer hover sobre la card. */
+  overlay: string;
   alt: string;
   title: string;
   description: string;
@@ -12,6 +14,7 @@ export type WorkCard = {
 export const workCards: WorkCard[] = [
   {
     image: `${images.works}/project1.jpg`,
+    overlay: `${images.works}/work-web/work1.png`,
     alt: "LegalBlox project",
     title: "LegalBlox",
     description:
@@ -20,6 +23,7 @@ export const workCards: WorkCard[] = [
   },
   {
     image: `${images.works}/project2.jpg`,
+    overlay: `${images.works}/work-web/work2.png`,
     alt: "NotaryChain project",
     title: "NotaryChain",
     description:
@@ -28,6 +32,7 @@ export const workCards: WorkCard[] = [
   },
   {
     image: `${images.works}/project3.jpg`,
+    overlay: `${images.works}/work-web/work3.png`,
     alt: "TrustFolio project",
     title: "TrustFolio",
     description:
@@ -36,7 +41,6 @@ export const workCards: WorkCard[] = [
   },
 ];
 
-/** Cabecera de la sección — estática. */
 export const worksIntro = {
   label: "Success Projects",
 };

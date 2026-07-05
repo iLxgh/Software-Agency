@@ -250,10 +250,55 @@ export function Organizations() {
   // Recorrido de la flecha (apunta arriba-derecha) al hacer hover en el CTA.
   useArrowHover(ctaRef, { direction: "up-right" });
 
+  // Superposición: la sección se fija (sticky) y Works sube por encima cubriéndola,
+  // mientras esta se va difuminando (blur ligado al scroll de Works).
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const works = section?.nextElementSibling as HTMLElement | null;
+      if (!section || !works) return;
+
+      const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (reduce) return;
+
+      // Se anima un proxy y se aplica el filtro en onUpdate (GSAP no interpola
+      // `filter: blur()` de forma nativa).
+      const state = { blur: 0 };
+      const apply = () => {
+        section.style.filter = state.blur ? `blur(${state.blur}px)` : "";
+      };
+
+      const tween = gsap.to(state, {
+        blur: 12,
+        ease: "none",
+        onUpdate: apply,
+        scrollTrigger: {
+          // De cuando Works asoma por abajo a cuando su borde superior llega
+          // arriba (cobertura completa): el blur avanza junto con la cobertura.
+          trigger: works,
+          start: "top bottom",
+          end: "top top",
+          scrub: true,
+        },
+      });
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        section.style.filter = "";
+      };
+    },
+    { scope: sectionRef },
+  );
+
   return (
     <section
       ref={sectionRef}
-      className="relative text-foreground"
+      // sticky con top negativo: se fija 150px "más tarde" para dejar ver la parte
+      // baja antes de congelarse. Sin bg propio para que se vea el ruido global.
+      className="sticky top-[-60px] z-0 text-foreground"
       style={{ overflowX: "clip" }}
       aria-label="Organizations that trust BLOXTEK"
     >

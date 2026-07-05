@@ -9,10 +9,16 @@ type NoiseBackgroundProps = {
   fps?: number;
   /** Tamaño del tile de ruido en px. Más chico = puntos más finos. */
   tileSize?: number;
+  /**
+   * Clases de posicionamiento/blend del canvas. Por defecto es una capa fija
+   * sobre toda la web con multiply (para fondos claros). Para fondos oscuros
+   * usa una capa scopeada con `mix-blend-screen` (aclara en vez de oscurecer).
+   */
+  className?: string;
 };
 
 /**
- * Estática de TV animada como capa fija sobre toda la web.
+ * Estática de TV animada como capa de ruido.
  * Regenera un tile de ruido por frame (throttled) y lo repite por pantalla.
  * Respeta prefers-reduced-motion (deja un solo frame estático).
  */
@@ -20,6 +26,7 @@ export function NoiseBackground({
   opacity = 0.08,
   fps = 18,
   tileSize = 160,
+  className = "fixed inset-0 -z-10 h-full w-full mix-blend-multiply",
 }: NoiseBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -97,7 +104,7 @@ export function NoiseBackground({
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full mix-blend-multiply"
+      className={`pointer-events-none ${className}`}
       style={{ opacity }}
     />
   );
