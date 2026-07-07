@@ -48,7 +48,12 @@ export function Works() {
         gsap.set(badge, { autoAlpha: 1 });
 
         tl = gsap.timeline({
-          scrollTrigger: { trigger: header, start: "top 85%" },
+          scrollTrigger: {
+            trigger: header,
+            start: "top 85%",
+            // Entra reproduciendo y sale al revés (reverse) en ambas direcciones.
+            toggleActions: "play reverse play reverse",
+          },
         });
 
         tl

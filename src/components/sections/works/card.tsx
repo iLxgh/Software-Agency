@@ -21,8 +21,6 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
   const statBoxRef = useRef<HTMLDivElement>(null);
   const statLabelRef = useRef<HTMLParagraphElement>(null);
   const hoverTlRef = useRef<gsap.core.Timeline | null>(null);
-  // El hover solo se habilita cuando la entrada de la card terminó.
-  const enteredRef = useRef(false);
 
   // --- Parallax de scroll + reveal de imagen en hover ---
   useGSAP(
@@ -146,7 +144,6 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
         if (reduce) {
           gsap.set([frame, statBox], { autoAlpha: 1 });
           splits.forEach((s) => s.revert());
-          enteredRef.current = true;
           return;
         }
 
@@ -154,9 +151,11 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
         gsap.set([frame, statBox], { autoAlpha: 1 });
 
         tl = gsap.timeline({
-          scrollTrigger: { trigger: rootRef.current, start: "top 80%" },
-          onComplete: () => {
-            enteredRef.current = true;
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: "top 80%",
+            // Entra reproduciendo y sale al revés (reverse) en ambas direcciones.
+            toggleActions: "play reverse play reverse",
           },
         });
 
@@ -222,9 +221,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
     { scope: rootRef },
   );
 
-  const onEnter = () => {
-    if (enteredRef.current) hoverTlRef.current?.play();
-  };
+  const onEnter = () => hoverTlRef.current?.play();
   const onLeave = () => hoverTlRef.current?.reverse();
 
   return (
@@ -233,7 +230,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
         ref={frameRef}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
-        className="relative aspect-4/3 w-full shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-[0_0_24px_rgba(0,0,0,0.35)] lg:w-[65%]"
+        className="relative aspect-4/3 w-full shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-[0_0_24px_rgba(0,0,0,0.35)] lg:ml-[-120px] lg:w-[calc(65%+120px)]"
       >
         <div ref={imgRef} className="absolute inset-0">
           <Image src={image} alt={alt} fill className="object-cover" />
