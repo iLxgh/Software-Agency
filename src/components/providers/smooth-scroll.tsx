@@ -28,12 +28,21 @@ export function SmoothScroll() {
     // Cada scroll de Lenis actualiza ScrollTrigger.
     lenis.on("scroll", ScrollTrigger.update);
 
+    // Cuando ScrollTrigger hace refresh (p. ej. al crear el spacer de un pin,
+    // que agranda el documento), Lenis debe re-medir su altura; si no, limita
+    // el scroll a la altura vieja y no deja avanzar a través del pin.
+    const onRefresh = () => lenis.resize();
+    ScrollTrigger.addEventListener("refresh", onRefresh);
+
     // Un solo bucle de RAF: GSAP maneja el ticker, Lenis se engancha a él.
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    ScrollTrigger.refresh();
+
     return () => {
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
       gsap.ticker.remove(raf);
       lenis.destroy();
     };

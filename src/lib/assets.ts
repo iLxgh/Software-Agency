@@ -11,6 +11,7 @@ export const images = {
   founder: "/images/about",
   organizations: "/images/organizations",
   works: "/images/works",
+  services: "/images/services",
 } as const;
 
 export const media = {

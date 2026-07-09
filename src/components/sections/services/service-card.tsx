@@ -21,7 +21,7 @@ export function ServiceCard({
 
       {/* panel blanco con bordes superiores redondeados */}
       <div className="absolute inset-x-0 bottom-0 rounded-t-2xl bg-white p-6">
-        <h3 className="font-neue-bold text-lg text-foreground">{title}</h3>
+        <h3 className="font-neue-bold text-2xl text-foreground">{title}</h3>
         <p className="mt-2 font-neue text-sm leading-relaxed text-foreground/60">
           {description}
         </p>
