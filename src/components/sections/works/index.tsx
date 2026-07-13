@@ -88,6 +88,7 @@ export function Works() {
 
   return (
     <section
+      id="work"
       // mt: colchón de scroll para que Works empiece a cubrir un poco más tarde
       // (Organizations queda visible ~300px más antes de que suba).
       className="relative z-10 mt-[300px] overflow-hidden bg-[#131313] text-white"

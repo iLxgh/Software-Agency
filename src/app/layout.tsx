@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { neueMontreal, neueMontrealBold, libreBaskerville } from "@/lib/fonts";
 import { NoiseBackground } from "@/components/ui/noise-background";
+import { Navbar } from "@/components/layout/navbar";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
+import { SoundHover } from "@/components/providers/sound-hover";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -33,7 +35,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
+        <SoundHover />
         <NoiseBackground />
+        <Navbar />
         {children}
       </body>
     </html>

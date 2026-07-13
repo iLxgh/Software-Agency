@@ -12,10 +12,12 @@ export const images = {
   organizations: "/images/organizations",
   works: "/images/works",
   services: "/images/services",
+  ia: "/images/ia",
 } as const;
 
 export const media = {
   video: "/media/video",
+  processVideos: "/media/video/process-videos",
   audio: "/media/audio",
 } as const;
 
