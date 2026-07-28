@@ -57,6 +57,7 @@ export function ScheduleCard() {
   return (
     <div
       ref={cardRef}
+      data-sound
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       className="flex text-black w-full max-w-md cursor-pointer overflow-hidden rounded-2xl bg-card shadow-[0_0_24px_rgba(0,0,0,0.12)]"

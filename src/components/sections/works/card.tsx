@@ -228,6 +228,7 @@ export function Card({ image, overlay, alt, title, description, stat }: WorkCard
     <div ref={rootRef} className="flex w-full flex-col gap-8 lg:flex-row">
       <div
         ref={frameRef}
+        data-sound
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
         className="relative aspect-4/3 w-full shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-[0_0_24px_rgba(0,0,0,0.35)] lg:ml-[-120px] lg:w-[calc(65%+120px)]"

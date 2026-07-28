@@ -83,6 +83,7 @@ export function Card({
   return (
     <article
       ref={rootRef}
+      data-sound
       onMouseEnter={() => hoverEnabled && tlRef.current?.play()}
       onMouseLeave={() => tlRef.current?.reverse()}
       className={cx(

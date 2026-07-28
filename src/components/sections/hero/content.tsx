@@ -10,6 +10,7 @@ import { ScheduleCard } from "./schedule-card";
 import { ENTRANCE } from "@/lib/motion";
 import { useMagnetic } from "@/lib/use-magnetic";
 import { useArrowHover } from "@/lib/use-arrow-hover";
+import { scrollToTarget } from "@/lib/scroll-to";
 
 gsap.registerPlugin(useGSAP);
 
@@ -85,7 +86,11 @@ export function HeroContent() {
       <div className="mt-8 flex flex-wrap items-end justify-between gap-8">
         <IconLink
           ref={discoverRef}
-          href="#"
+          href="#about"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToTarget("#about");
+          }}
           icon={ArrowDown}
           iconSize="lg"
           className="text-small"

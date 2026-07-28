@@ -7,7 +7,6 @@ import { media } from "@/lib/assets";
 const HOVER_FILES = ["tap-2.mp3", "tap-3.mp3", "tap-4.mp3", "tap-5.mp3"];
 /** Tap de CLICK. */
 const CLICK_FILE = "main-tap.mp3";
-/** Ambiente de fondo (loop, muy bajito). */
 const AMBIENT_FILE = "Space.mp3";
 const STORAGE_KEY = "bloxtek:sound-enabled";
 

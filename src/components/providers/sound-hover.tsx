@@ -3,8 +3,10 @@
 import { useEffect } from "react";
 import { playTap, playClick, ensureAmbient } from "@/lib/sound";
 
-/** Elementos clickeables sobre los que suena el tap al hacer hover. */
-const SELECTOR = "a[href], button, [role='button']";
+/** Hover: clickeables + cualquier cosa marcada con `data-sound` (cards, etc.). */
+const HOVER_SELECTOR = "a[href], button, [role='button'], [data-sound]";
+/** Click: solo elementos realmente clickeables. */
+const CLICK_SELECTOR = "a[href], button, [role='button']";
 
 /**
  * Escucha global (delegación) que reproduce un tap al entrar con el cursor a
@@ -18,7 +20,7 @@ export function SoundHover() {
 
     const onOver = (e: PointerEvent) => {
       const el =
-        (e.target as Element | null)?.closest?.(SELECTOR) ?? null;
+        (e.target as Element | null)?.closest?.(HOVER_SELECTOR) ?? null;
       if (!el || el === current) return;
       // No suena en botones deshabilitados (ej. flechas del carrusel al tope).
       if (el instanceof HTMLButtonElement && el.disabled) return;
@@ -36,7 +38,7 @@ export function SoundHover() {
 
     // Click en un clickeable → main-tap.
     const onDown = (e: PointerEvent) => {
-      const el = (e.target as Element | null)?.closest?.(SELECTOR) ?? null;
+      const el = (e.target as Element | null)?.closest?.(CLICK_SELECTOR) ?? null;
       if (!el) return;
       if (el instanceof HTMLButtonElement && el.disabled) return;
       playClick();

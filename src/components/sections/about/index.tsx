@@ -260,6 +260,7 @@ export function About() {
   return (
     <section
       ref={sectionRef}
+      id="about"
       className="relative text-foreground"
       aria-label="About BLOXTEK"
     >

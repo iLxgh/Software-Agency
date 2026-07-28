@@ -164,7 +164,7 @@ export function Organizations() {
             // Entra reproduciendo y sale reproduciendo al revés (reverse), en
             // ambas direcciones. Así, al salir se oculta suavemente en vez de
             // saltar a oculto de golpe (lo que causaba el parpadeo al regresar).
-            toggleActions: "play reverse play reverse",
+            toggleActions: "play none none none",
           },
           // Deshabilita el hover mientras entra; lo re-habilita al terminar.
           onStart: () => setHoverReady(false),

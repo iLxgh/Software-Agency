@@ -6,21 +6,35 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ArrowUpRight, Volume2, VolumeX } from "lucide-react";
-import { IconButton } from "@/components/ui/icon-button";
 import { IconLink } from "@/components/ui/icon-link";
+import {
+  cx,
+  iconGlyphIconSizeClasses,
+  iconGlyphSizeClasses,
+  iconGlyphVariantClasses,
+} from "@/components/ui/icon-glyph-styles";
 import { ENTRANCE } from "@/lib/motion";
 import { useArrowHover } from "@/lib/use-arrow-hover";
 import { useSoundEnabled, toggleSound } from "@/lib/sound";
+import { scrollToTarget, scrollToTop } from "@/lib/scroll-to";
+import { openAbout, useAboutOpen } from "@/lib/about-panel";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-const navLinks = ["About", "Work", "Services", "Process"];
+// `target` = id de la sección a la que hace scroll; `action` = acción especial.
+const navLinks: { label: string; target?: string; action?: "about" }[] = [
+  { label: "About", action: "about" },
+  { label: "Work", target: "#work" },
+  { label: "Services", target: "#services" },
+  { label: "Process", target: "#process" },
+];
 
 export function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const talkRef = useRef<HTMLAnchorElement>(null);
 
   const soundOn = useSoundEnabled();
+  const aboutOpen = useAboutOpen();
 
   useArrowHover(talkRef, { direction: "up-right" });
 
@@ -51,6 +65,9 @@ export function Navbar() {
             transformOrigin: "left center",
             duration: 0.6,
             ease: "power2.out",
+            // mata cualquier tween previo del mismo box para que no se queden
+            // solapados y el recuadro se quede pegado al pasar rápido.
+            overwrite: true,
           });
         const leave = () =>
           gsap.to(box, {
@@ -58,6 +75,7 @@ export function Navbar() {
             transformOrigin: "right center",
             duration: 0.55,
             ease: "power2.inOut",
+            overwrite: true,
           });
 
         link.addEventListener("mouseenter", enter);
@@ -69,6 +87,68 @@ export function Navbar() {
       });
 
       return () => cleanups.forEach((c) => c());
+    },
+    { scope: navRef },
+  );
+
+  // Botón de sonido: hover = solo scale; click = press + rebote. Se anima el
+  // span wrapper (estable) en vez del svg, que se reemplaza al mutear.
+  useGSAP(
+    () => {
+      const nav = navRef.current;
+      const btn = nav?.querySelector("button");
+      const icon = nav?.querySelector<HTMLElement>("[data-sound-icon]");
+      if (!btn || !icon) return;
+      const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (reduce) return;
+
+      let hovering = false;
+
+      const enter = () => {
+        hovering = true;
+        gsap.to(icon, {
+          scale: 1.18,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      };
+      const leave = () => {
+        hovering = false;
+        gsap.to(icon, {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      };
+      // Click: se hunde y rebota (feedback claro del click).
+      const press = () => {
+        gsap
+          .timeline()
+          .to(icon, {
+            scale: 0.8,
+            duration: 0.1,
+            ease: "power2.in",
+            overwrite: true,
+          })
+          .to(icon, {
+            scale: hovering ? 1.18 : 1,
+            duration: 0.5,
+            ease: "back.out(3.5)",
+          });
+      };
+
+      btn.addEventListener("mouseenter", enter);
+      btn.addEventListener("mouseleave", leave);
+      btn.addEventListener("click", press);
+      return () => {
+        btn.removeEventListener("mouseenter", enter);
+        btn.removeEventListener("mouseleave", leave);
+        btn.removeEventListener("click", press);
+      };
     },
     { scope: navRef },
   );
@@ -199,21 +279,38 @@ export function Navbar() {
   );
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-6">
+    <header
+      className={`pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:pt-6 ${
+        aboutOpen ? "-translate-x-[50px]" : ""
+      }`}
+    >
       <nav
         ref={navRef}
         className="pointer-events-auto flex w-full max-w-4xl items-center gap-4 rounded-2xl bg-card px-5 py-3 text-black shadow-[0_0_24px_rgba(0,0,0,0.12)] sm:px-6"
       >
-        <a href="#" className="text-xl font-extrabold tracking-tight">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToTop();
+          }}
+          aria-label="Back to top"
+          className="text-xl font-extrabold tracking-tight"
+        >
           <span data-nav-text>BLOXTEK</span>
         </a>
 
         <ul className="mx-auto hidden items-center gap-5 md:flex">
           {navLinks.map((link) => (
-            <li key={link}>
+            <li key={link.label}>
               <a
-                href="#"
+                href={link.target ?? "#"}
                 data-nav-link
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (link.target) scrollToTarget(link.target);
+                  else if (link.action === "about") openAbout();
+                }}
                 className="relative inline-flex items-center rounded-md px-2.5 py-1 text-small font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {/* recuadro gris que crece de izq. a der. en hover */}
@@ -223,7 +320,7 @@ export function Navbar() {
                   className="pointer-events-none absolute inset-0 origin-left scale-x-0 rounded-md bg-foreground/10"
                 />
                 <span data-nav-text className="relative">
-                  {link}
+                  {link.label}
                 </span>
               </a>
             </li>
@@ -236,13 +333,36 @@ export function Navbar() {
               Talk to us
             </span>
           </IconLink>
-          <IconButton
-            icon={soundOn ? Volume2 : VolumeX}
+          <button
+            type="button"
             aria-label={soundOn ? "Mute sound" : "Unmute sound"}
             aria-pressed={!soundOn}
             onClick={() => toggleSound()}
-            className="cursor-pointer"
-          />
+            className={cx(
+              "flex cursor-pointer items-center justify-center rounded-lg",
+              iconGlyphSizeClasses.md,
+              iconGlyphVariantClasses.solid,
+            )}
+          >
+            {/* wrapper estable: el svg se reemplaza al mutear, este span no, así
+                las animaciones de hover/click no se pierden. */}
+            <span
+              data-sound-icon
+              className="flex items-center justify-center"
+            >
+              {soundOn ? (
+                <Volume2
+                  className={iconGlyphIconSizeClasses.md}
+                  strokeWidth={2.5}
+                />
+              ) : (
+                <VolumeX
+                  className={iconGlyphIconSizeClasses.md}
+                  strokeWidth={2.5}
+                />
+              )}
+            </span>
+          </button>
         </div>
       </nav>
     </header>

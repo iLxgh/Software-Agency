@@ -64,7 +64,7 @@ export function Step({ id, title, description, video, fromDir }: StepProps) {
           scrollTrigger: {
             trigger: root,
             start: "top 78%",
-            toggleActions: "play reverse play reverse",
+            toggleActions: "play none none none",
           },
         });
 

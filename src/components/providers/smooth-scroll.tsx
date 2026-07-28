@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { setLenis } from "@/lib/scroll-to";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,6 +25,8 @@ export function SmoothScroll() {
     if (reduce) return;
 
     const lenis = new Lenis({ lerp: 0.090});
+    // Expone la instancia para el scroll suave a secciones (navbar, footer, etc.).
+    setLenis(lenis);
 
     // Cada scroll de Lenis actualiza ScrollTrigger.
     lenis.on("scroll", ScrollTrigger.update);
@@ -44,6 +47,7 @@ export function SmoothScroll() {
     return () => {
       ScrollTrigger.removeEventListener("refresh", onRefresh);
       gsap.ticker.remove(raf);
+      setLenis(null);
       lenis.destroy();
     };
   }, []);

@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { NoiseBackground } from "@/components/ui/noise-background";
 import { images } from "@/lib/assets";
+import { scrollToTarget } from "@/lib/scroll-to";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -170,7 +171,15 @@ export function Footer() {
             </div>
             <div className="flex flex-col gap-1.5">
               {navLinks.map((l) => (
-                <a key={l.label} href={l.href} className={linkClass}>
+                <a
+                  key={l.label}
+                  href={l.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToTarget(l.href);
+                  }}
+                  className={linkClass}
+                >
                   {l.label}
                 </a>
               ))}
