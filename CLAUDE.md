@@ -48,14 +48,9 @@ Lo más sensible:
   `process`, `meeting`. Si se decide que no vuelven, se borran y se deduplica
   el slider (`ui/stat-slider.tsx` repite la lógica que sigue dentro de
   `about/index.tsx`).
-- **Pantalla de carga fuera del render.** `providers/preloader.tsx` está
-  terminada (cubo → logotipo → marco blanco → expansión tipo papel quemándose)
-  pero comentada en `app/layout.tsx`. Para reactivarla hacen falta las DOS
-  cosas: descomentar `<Preloader />` y devolver `ENTRANCE.gate` a 3.1 en
-  `lib/motion.ts`. Con la pantalla puesta y la compuerta a 0, las entradas del
-  hero y del navbar se reproducen detrás y el visitante se las encuentra
-  terminadas; con la compuerta a 3.1 y la pantalla quitada, el hero tarda tres
-  segundos en aparecer.
+- **La landing original está en la rama `landing-original`** (commit
+  `f49b96c`), entera y renderizándose. O sea que las secciones comentadas de
+  `page.tsx` ya no son la única copia y se pueden borrar sin perder nada.
 - **`meeting` salió del render** y con ella `ui/schedule-card.tsx` y
   `ui/stat-slider.tsx` se quedaron sin usar en toda la web. La tarjeta del
   calendario merece volver, pero DENTRO de `contact`, como alternativa directa
