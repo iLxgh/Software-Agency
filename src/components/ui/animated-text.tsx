@@ -63,7 +63,7 @@ export function AnimatedText({
       gsap.set(el, { autoAlpha: 0 });
 
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       ).matches;
 
       let instance: SplitText | null = null;
@@ -100,7 +100,7 @@ export function AnimatedText({
 
       return () => instance?.revert();
     },
-    { scope: ref }
+    { scope: ref },
   );
 
   return createElement(as, { ref, className }, children);

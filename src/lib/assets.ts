@@ -12,6 +12,9 @@ export const images = {
   organizations: "/images/organizations",
   works: "/images/works",
   services: "/images/services",
+  cards: "/images/cards",
+  cube: "/images/cube",
+  fadedLogo: "/images/logo-desvanecido",
   ia: "/images/ia",
 } as const;
 

@@ -112,12 +112,7 @@ export function Process() {
         <div ref={headerRef} className="mb-20">
           {/* etiqueta con check */}
           <div className="mb-16 flex items-center gap-3">
-            <IconBadge
-              icon={Check}
-              size="sm"
-              variant="brand"
-              className="text-white"
-            />
+            <IconBadge icon={Check} size="sm" variant="brand" />
             <span data-reveal className="font-neue text-base text-foreground">
               {processIntro.label}
             </span>

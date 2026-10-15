@@ -24,7 +24,7 @@ export function SmoothScroll() {
     ).matches;
     if (reduce) return;
 
-    const lenis = new Lenis({ lerp: 0.090});
+    const lenis = new Lenis({ lerp: 0.09 });
     // Expone la instancia para el scroll suave a secciones (navbar, footer, etc.).
     setLenis(lenis);
 

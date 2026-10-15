@@ -330,7 +330,7 @@ export function Organizations() {
               <IconBadge
                 icon={ArrowUpRight}
                 size="lg"
-                className="rounded-none text-white"
+                className="rounded-none"
               />
             </a>
           </div>

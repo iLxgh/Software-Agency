@@ -107,17 +107,17 @@ export function Works() {
 
       <div className="relative z-10 mx-auto flex max-w-[1400px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-20 md:flex-row lg:px-8 lg:py-24">
         {/* Izquierda: título + icono */}
-        <div
-          ref={headerRef}
-          className="flex w-full items-start gap-3 md:w-1/4"
-        >
+        <div ref={headerRef} className="flex w-full items-start gap-3 md:w-1/4">
           <IconBadge
             icon={Check}
             size="sm"
             variant="brand"
-            className="mt-0.5 text-white"
+            className="mt-0.5"
           />
-          <h2 ref={labelRef} className="font-neue text-lg tracking-wide text-white">
+          <h2
+            ref={labelRef}
+            className="font-neue text-lg tracking-wide text-white"
+          >
             {worksIntro.label}
           </h2>
         </div>

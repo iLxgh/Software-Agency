@@ -38,7 +38,8 @@ export function SoundHover() {
 
     // Click en un clickeable → main-tap.
     const onDown = (e: PointerEvent) => {
-      const el = (e.target as Element | null)?.closest?.(CLICK_SELECTOR) ?? null;
+      const el =
+        (e.target as Element | null)?.closest?.(CLICK_SELECTOR) ?? null;
       if (!el) return;
       if (el instanceof HTMLButtonElement && el.disabled) return;
       playClick();

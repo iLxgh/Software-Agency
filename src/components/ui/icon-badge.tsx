@@ -42,7 +42,7 @@ export function IconBadge({
     () => {
       if (!animateIn) return;
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       ).matches;
       if (reduce) return;
 
@@ -56,7 +56,7 @@ export function IconBadge({
         ease: ENTRANCE.icon.ease,
       });
     },
-    { scope: ref, dependencies: [animateIn, delay] }
+    { scope: ref, dependencies: [animateIn, delay] },
   );
 
   return (
@@ -66,7 +66,7 @@ export function IconBadge({
         "flex shrink-0 items-center justify-center rounded-lg",
         iconGlyphSizeClasses[size],
         iconGlyphVariantClasses[variant],
-        className
+        className,
       )}
     >
       <Icon className={iconGlyphIconSizeClasses[size]} strokeWidth={2.5} />

@@ -74,16 +74,15 @@ export function ServiceCard({
           },
         });
 
-        tl
-          .from(root, {
-            scale: 0.6,
-            xPercent: 12,
-            yPercent: 24,
-            autoAlpha: 0,
-            transformOrigin: "right bottom",
-            duration: 0.8,
-            ease: "back.out(1.4)",
-          })
+        tl.from(root, {
+          scale: 0.6,
+          xPercent: 12,
+          yPercent: 24,
+          autoAlpha: 0,
+          transformOrigin: "right bottom",
+          duration: 0.8,
+          ease: "back.out(1.4)",
+        })
           .from(
             splits[0].words,
             { yPercent: 100, duration: 0.6, stagger: 0.04, ease: "power3.out" },

@@ -173,7 +173,7 @@ export function Services() {
                 icon={Check}
                 size="sm"
                 variant="brand"
-                className="mt-0.5 text-white"
+                className="mt-0.5"
               />
               <p
                 data-reveal
@@ -271,7 +271,9 @@ export function Services() {
           <div
             key={i}
             className={`flex ${
-              i % 2 === 0 ? "justify-start md:pl-[8%]" : "justify-end md:pr-[8%]"
+              i % 2 === 0
+                ? "justify-start md:pl-[8%]"
+                : "justify-end md:pr-[8%]"
             }`}
           >
             <ServiceCard {...card} />

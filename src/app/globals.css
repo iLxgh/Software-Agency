@@ -1,13 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  /* Neutros: no cambian entre paletas. */
   --background: #ffffff;
   --foreground: #171717;
   --card: #f4f3f1;
   --muted-foreground: #6b6b6b;
-  --brand: #5229CD;
-  --brand-foreground: #0a0a0a;
   --destructive: #e5484d;
+
+ 
+  --brand: #98c11d;
+  /* Blanco: es lo que pide el diseño. Ojo, sobre el verde claro el contraste
+     es bajo (~1.9:1); si algún día hay que cumplir AA, este es el valor a
+     revisar, no el verde. */
+  --brand-foreground: #ffffff;
+  --accent: #5229cd;
+  --trust-light: #98c11d;
+  --trust-light-fade: #f7fbea;
+  --trust-dark: #1c2b07;
+  --trust-dark-fade: #949a8c;
+  --approach-from: #cfe87a;
+  --approach-to: #1c2b07;
+
+  /* --brand: #5229cd;
+  --brand-foreground: #ffffff;
+  --accent: #98c11d;
+  --trust-light: #5c4ff3;
+  --trust-light-fade: #f8f8ff;
+  --trust-dark: #161554;
+  --trust-dark-fade: #949496;
+  --approach-from: #8f83f7;
+  --approach-to: #161554; */
 }
 
 @theme inline {
@@ -17,6 +40,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-accent: var(--accent);
   --color-destructive: var(--destructive);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

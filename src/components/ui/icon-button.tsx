@@ -42,7 +42,7 @@ export function IconButton({
     () => {
       if (!animateIn) return;
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       ).matches;
       if (reduce) return;
 
@@ -56,7 +56,7 @@ export function IconButton({
         ease: ENTRANCE.icon.ease,
       });
     },
-    { scope: ref, dependencies: [animateIn, delay] }
+    { scope: ref, dependencies: [animateIn, delay] },
   );
 
   return (
@@ -67,7 +67,7 @@ export function IconButton({
         "flex items-center justify-center rounded-lg",
         iconGlyphSizeClasses[size],
         iconGlyphVariantClasses[variant],
-        className
+        className,
       )}
       {...props}
     >

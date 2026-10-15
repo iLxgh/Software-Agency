@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { NoiseBackground } from "@/components/ui/noise-background";
 import { images } from "@/lib/assets";
-import { scrollToTarget } from "@/lib/scroll-to";
+import { scrollToSection } from "@/lib/scroll-to";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -19,10 +19,15 @@ const socials = [
   { label: "Instagram", href: "#" },
 ];
 
+// El footer sí lista los destinos en plano: aquí hay sitio de sobra y no hace
+// falta agrupar nada bajo un desplegable como en la navbar.
 const navLinks = [
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
+  { label: "Cómo trabajamos", href: "#approach" },
+  { label: "Tecnología", href: "#stack" },
+  { label: "Plataformas", href: "#platforms" },
+  { label: "Sectores", href: "/sectores" },
+  { label: "Distribuidores", href: "#distribuidores" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 /** Prompt precargado al abrir el chat de cada agente. */
@@ -174,10 +179,17 @@ export function Footer() {
                 <a
                   key={l.label}
                   href={l.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToTarget(l.href);
-                  }}
+                  // Solo se interceptan las anclas. `/sectores` es una ruta y
+                  // tiene que navegar; si se intercepta, `scrollToSection`
+                  // acabaría buscando un selector inválido y no pasaría nada.
+                  onClick={
+                    l.href.startsWith("#")
+                      ? (e) => {
+                          e.preventDefault();
+                          scrollToSection(l.href);
+                        }
+                      : undefined
+                  }
                   className={linkClass}
                 >
                   {l.label}

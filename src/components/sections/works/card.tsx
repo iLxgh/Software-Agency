@@ -10,7 +10,14 @@ import type { WorkCard } from "./slides";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-export function Card({ image, overlay, alt, title, description, stat }: WorkCard) {
+export function Card({
+  image,
+  overlay,
+  alt,
+  title,
+  description,
+  stat,
+}: WorkCard) {
   const rootRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);

@@ -6,7 +6,6 @@ import { useGSAP } from "@gsap/react";
 import { ArrowDown, Check } from "lucide-react";
 import { IconLink } from "@/components/ui/icon-link";
 import { AnimatedText } from "@/components/ui/animated-text";
-import { ScheduleCard } from "./schedule-card";
 import { ENTRANCE } from "@/lib/motion";
 import { useMagnetic } from "@/lib/use-magnetic";
 import { useArrowHover } from "@/lib/use-arrow-hover";
@@ -25,7 +24,7 @@ export function HeroContent() {
   useGSAP(
     () => {
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       ).matches;
       if (reduce) return;
 
@@ -35,11 +34,11 @@ export function HeroContent() {
         autoAlpha: 0,
         transformOrigin: "center",
         duration: ENTRANCE.icon.duration,
-        delay: ENTRANCE.icon.check,
+        delay: ENTRANCE.gate + ENTRANCE.icon.check,
         ease: ENTRANCE.icon.ease,
       });
     },
-    { scope: checkRef }
+    { scope: checkRef },
   );
 
   return (
@@ -54,55 +53,55 @@ export function HeroContent() {
         <AnimatedText
           as="p"
           className="text-small font-medium"
-          delay={ENTRANCE.tagline}
+          delay={ENTRANCE.gate + ENTRANCE.tagline}
           stagger={0.08}
         >
-          B2B / B2G Blockchain Solutions Provider
+          Socio tecnológico / Blockchain aplicado a negocio real
         </AnimatedText>
       </div>
 
       <AnimatedText
         as="h1"
         className="mt-5 max-w-5xl text-balance font-neue-bold text-title"
-        delay={ENTRANCE.title}
+        delay={ENTRANCE.gate + ENTRANCE.title}
         stagger={0.07}
         maskPadBottom={14}
       >
-        We Build{" "}
-        <span className="font-baskerville italic">high-performance</span>{" "}
-        marketing engines for <br /> B2B Brands
+        La tecnología que tu operación necesita, no la que{" "}
+        <span className="font-baskerville italic">está de moda</span>
       </AnimatedText>
 
       <AnimatedText
         as="p"
         className="mt-6 max-w-md text-pretty text-body text-foreground/80"
-        delay={ENTRANCE.description}
+        delay={ENTRANCE.gate + ENTRANCE.description}
         stagger={0.045}
       >
-        We build, optimize, and scale marketing engines that generate pipeline
-        and improve marketing ROI
+        Consultoría y desarrollo para empresas que ya operan. Primero el
+        problema, luego la tecnología.
       </AnimatedText>
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-8">
         <IconLink
           ref={discoverRef}
-          href="#about"
+          // Apuntaba a #meeting, o sea al calendario: el botón prometía "las
+          // cuatro soluciones" y aterrizaba en una petición de reunión.
+          // #approach son literalmente las cuatro tarjetas.
+          href="#approach"
           onClick={(e) => {
             e.preventDefault();
-            scrollToTarget("#about");
+            scrollToTarget("#approach");
           }}
           icon={ArrowDown}
           iconSize="lg"
           className="text-small"
           iconAnimateIn
-          iconDelay={ENTRANCE.icon.discover}
+          iconDelay={ENTRANCE.gate + ENTRANCE.icon.discover}
         >
-          <AnimatedText as="span" delay={ENTRANCE.cta}>
-            Discover more
+          <AnimatedText as="span" delay={ENTRANCE.gate + ENTRANCE.cta}>
+            Conocer las cuatro soluciones
           </AnimatedText>
         </IconLink>
-
-        <ScheduleCard />
       </div>
     </section>
   );

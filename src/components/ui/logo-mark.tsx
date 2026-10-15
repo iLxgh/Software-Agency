@@ -1,0 +1,51 @@
+import type { CSSProperties } from "react";
+
+/**
+ * El símbolo de la marca: solo el cubo, sin el nombre.
+ *
+ * Se extrajo del primer `<path>` de `logo-bloxtek.svg` —el único cuyo recorrido
+ * cabe en un cuadrado de 39×39; los otros diez son las letras y el ®—, porque
+ * no existía el cubo suelto como asset y la pantalla de carga lo necesita
+ * aparte del nombre: primero entra el símbolo y después el logotipo.
+ *
+ * Hereda el color del texto, así que se recolorea con `className`.
+ */
+export function LogoMark({
+  className,
+  style,
+  weight = 0,
+}: {
+  className?: string;
+  style?: CSSProperties;
+  /**
+   * Engorda los trazos del cubo, en unidades del viewBox (39 de lado).
+   *
+   * Los trazos de este logo vienen convertidos a contorno relleno, así que no
+   * hay un `stroke-width` que subir. El apaño es pintarle ENCIMA un trazo del
+   * mismo color: engorda cada contorno por fuera y por dentro a partes
+   * iguales, que es justo el efecto de una tipografía más gruesa.
+   *
+   * Una unidad equivale a 1/39 del lado, así que a 64px cada unidad son ~1.6px
+   * y el grosor añadido es el doble (crece por los dos lados del contorno).
+   * Valores por encima de ~1 empiezan a cerrar los huecos del cubo.
+   */
+  weight?: number;
+}) {
+  return (
+    <svg
+      viewBox="0 0 39 39"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className={className}
+      style={style}
+    >
+      <path
+        strokeWidth={weight}
+        stroke={weight ? "currentColor" : undefined}
+        strokeLinejoin="round"
+        d="M38.7778 19.5018L33.3447 10.1512L35.9469 5.54733L33.2589 0.457371L27.111 0.0284424L24.1657 5.20419H13.614L8.26669 14.6978H2.97656L0.03125 19.416L3.03375 24.7633H8.40966L13.7856 33.9996H24.3658L26.8536 38.4319L27.0252 38.8036H33.0302L35.8897 33.6279L33.2589 28.9954L38.835 19.5304L38.7778 19.5018ZM37.9486 19.5018L32.8014 28.252L27.9402 19.702L32.9158 10.866L37.9486 19.5018ZM16.9882 19.416L19.2473 15.4127H24.6804L27.111 19.702L24.6804 24.0199H19.5904L17.0168 19.416H16.9882ZM18.7611 24.0199H8.7814L6.23642 19.6734L8.63842 15.3841H18.3894L16.1304 19.3874L18.704 23.9913L18.7611 24.0199ZM19.6476 14.6692L24.566 5.89047H30.0277L32.5155 10.1512L27.5399 18.9585L25.1093 14.6692H19.6476ZM25.1093 24.7347L27.5399 20.4169L32.4011 28.9668L29.8847 33.2561H24.7662L19.9907 24.7347H25.1093ZM32.9444 9.43628L30.8855 5.89047H34.9461L32.9444 9.43628ZM32.83 1.11506L34.9747 5.17559H30.4852L27.9116 0.743324L32.83 1.11506ZM27.2825 1.11506L29.6559 5.17559H24.9949L27.2825 1.11506ZM14.0429 5.89047H23.7939L18.8755 14.6692H9.12454L14.0715 5.89047H14.0429ZM5.86468 18.9585L3.80582 15.4127H7.86635L5.86468 18.9585ZM3.14813 15.7272L5.43575 19.6734L3.20532 23.6481L0.831917 19.416L3.14813 15.7272ZM3.83442 24.0199L5.86468 20.3883L7.98073 24.0199H3.83442ZM14.1859 33.2561L9.23892 24.7347H19.1901L23.9655 33.2561H14.2145H14.1859ZM25.1665 33.971H29.4558L27.2539 37.717L25.1665 33.971ZM32.5727 38.0601H27.8544L30.2564 33.971H34.8031L32.5441 38.0601H32.5727ZM34.8317 33.2561H30.714L32.8014 29.6817L34.8317 33.2561Z"
+      />
+    </svg>
+  );
+}

@@ -51,7 +51,7 @@ function Star() {
       icon={Sparkle}
       size="sm"
       variant="brand"
-      className="mt-0.5 shrink-0 text-white"
+      className="mt-0.5 shrink-0"
     />
   );
 }

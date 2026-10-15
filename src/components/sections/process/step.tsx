@@ -32,11 +32,9 @@ export function Step({ id, title, description, video, fromDir }: StepProps) {
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      const textEls = [
-        idRef.current,
-        titleRef.current,
-        descRef.current,
-      ].filter(Boolean) as HTMLElement[];
+      const textEls = [idRef.current, titleRef.current, descRef.current].filter(
+        Boolean,
+      ) as HTMLElement[];
 
       // Oculta antes del primer paint para evitar el flash.
       gsap.set([root, videoRef.current], { autoAlpha: 0 });

@@ -1,7 +1,11 @@
 import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
 import type { LucideIcon } from "lucide-react";
 import { IconBadge } from "./icon-badge";
-import { cx, type IconGlyphSize, type IconGlyphVariant } from "./icon-glyph-styles";
+import {
+  cx,
+  type IconGlyphSize,
+  type IconGlyphVariant,
+} from "./icon-glyph-styles";
 
 type IconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   icon: LucideIcon;
@@ -37,7 +41,7 @@ export function IconLink({
         icon={icon}
         size={iconSize}
         variant={iconVariant}
-        className="text-white"
+
         animateIn={iconAnimateIn}
         delay={iconDelay}
       />
