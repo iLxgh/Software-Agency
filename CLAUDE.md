@@ -10,15 +10,6 @@ alguien de Bloxtek.
 - **Metadatos por defecto.** `src/app/layout.tsx` sigue con el `title` y la
   `description` de la plantilla ("Create Next App"). Falta también sitemap,
   robots y Open Graph — es el mayor retorno de SEO por el esfuerzo que cuesta.
-- **El panel de Nosotros tiene credenciales falsas.**
-  `layout/about-panel.tsx` viene de la plantilla y sigue con SUS datos, no los
-  de Bloxtek: lista como clientes a Vinamilk, Moc Chau Creamery, OH
-  Architecture, Supersolid y la University of Sydney, y como premios Awwwards
-  SOTD (x5), FWA SOTD (x5) y CSSDA SOTD (x5). Son empresas y galardones reales
-  de otra agencia. Publicarlo es atribuirse clientes y premios ajenos, así que
-  esto no es "copy sin validar": o se sustituye por datos reales o el panel no
-  sale. El texto de presentación también está en inglés, a diferencia del resto
-  de la web.
 - **El formulario de contacto no envía a ningún lado.**
   `sections/contact/form.tsx` solo pasa a la pantalla de confirmación. Falta
   decidir destino (endpoint propio, Formspree, Resend, HubSpot…) y conectarlo.
@@ -46,6 +37,17 @@ Lo más sensible:
 - `sections/approach/intro.tsx` — la bajada bajo el titular ("Cada proyecto
   empieza con un diagnóstico…"). No afirma nada que el titular no diga ya, pero
   es copy mío.
+- `layout/about-panel.tsx` — se reescribió con lo que publica bloxtek.com/about-2,
+  pero **su web no da clientes, ni premios, ni año de fundación, ni nombres del
+  equipo**. Esos bloques se sustituyeron por las plataformas propias y los
+  estándares sobre los que construyen, que es lo único verificable. Si Bloxtek
+  aporta clientes o cifras reales, ese es el sitio. Las bajadas de los cuatro
+  compromisos las redacté yo.
+- **Los cuatro compromisos de la web real son "Generamos confianza",
+  "Entregamos resultados", "Somos ágiles y flexibles" y "Traducimos tech a
+  negocio"**, pero los eyebrows de la sección Trust son otros (Honestidad,
+  Cumplimiento, Cercanía, Lenguaje), inventados por mí antes de ver esa página.
+  Alinearlos haría que la landing hable el mismo idioma que su propia web.
 - `sections/approach/slides.ts` — el `deliverable` de las cuatro tarjetas.
   Sustituyó a las CTAs (la tarjeta no enlaza a nada) y está inferido de las
   descripciones: hay que confirmar que el entregable real de cada línea es ese.

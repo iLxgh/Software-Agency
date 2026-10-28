@@ -6,41 +6,66 @@ import { IconBadge } from "@/components/ui/icon-badge";
 import { useAboutOpen, closeAbout } from "@/lib/about-panel";
 import { lockScroll, unlockScroll } from "@/lib/scroll-to";
 
+/**
+ * Contenido del panel, sacado de la página "Nosotros" de bloxtek.com.
+ *
+ * Sustituye a los datos de la plantilla, que listaban como clientes de Bloxtek
+ * a Vinamilk, OH Architecture o la University of Sydney, y como premios varios
+ * Awwwards y FWA. Son empresas y galardones reales de OTRA agencia: estaban
+ * ahí como relleno y publicarlos habría sido atribuirse credenciales ajenas.
+ *
+ * OJO con lo que NO hay. Su web no publica clientes, ni premios, ni año de
+ * fundación, ni nombres del equipo, así que esos bloques no se han "rellenado
+ * con otra cosa": se han sustituido por lo único verificable que sí publican
+ * —las plataformas propias y los estándares sobre los que construyen—. Si
+ * alguien de Bloxtek aporta clientes o cifras reales, este es el sitio.
+ */
 const intro = [
-  "Hey, we are Bloxtek. We started because we saw how many companies and governments in Mexico invested in blockchain technology but ended up with complex solutions that did not solve their real problems.",
-  "That gap became our obsession. We have spent years understanding critical operations to build proprietary platforms that generate trust, traceability and real efficiency.",
-  "When we work with our clients, we immerse ourselves in their processes, are relentless in what really matters, and close the gap between their current operation and the digital future they need.",
+  "Somos un socio tecnológico, no una fábrica de software. Construimos a partir de problemas reales de negocio, no de la tecnología que esté de moda.",
+  "Diagnosticamos la operación antes de proponer nada, y de ahí sale el camino: una plataforma propia, desarrollo a medida o ambos. A veces, la respuesta es que todavía no hace falta software.",
+  "Nos quedamos hasta que el resultado es real. Trabajamos sobre estándares abiertos y con infraestructura con validez legal en México, porque lo que construimos tiene que sostenerse ante una auditoría, no solo en una demo.",
 ];
 
-const meta = ["SINCE 2020", "BASED IN MEXICO, NUEVO LEON"];
+/** Lo único que su web afirma de sí misma como dato. */
+const meta = ["MONTERREY, MÉXICO", "NODO EN LACNET"];
 
-const clients = [
-  "Vinamilk",
-  "Moc Chau Creamery",
-  "OH Architecture",
-  "Supersolid",
-  "University of Sydney",
+/** Las cuatro plataformas propias. */
+const platforms = [
+  "LegalBlox — contratos con validez legal",
+  "EduBlox — credenciales verificables",
+  "RealVext — operación inmobiliaria",
+  "Wallox — billetera digital",
 ];
 
-const projects = [
-  "Awwwards SOTD (x5)",
-  "FWA SOTD (x5)",
-  "CSSDA SOTD (x5)",
-  "Awwwards Honorable Mention (x8)",
+/** Estándares e infraestructura sobre los que construyen. */
+const standards = [
+  "W3C — credenciales verificables",
+  "Hyperledger",
+  "DIF — Decentralized Identity Foundation",
+  "LACChain / LACNet",
+  "NOM-151-SCFI-2016 — conservación de mensajes de datos",
 ];
 
+/**
+ * Los cuatro compromisos, tal como los enuncia su web. Las bajadas las
+ * redacté yo a partir del resto de la página — PENDIENTE de validar.
+ */
 const principles = [
   {
-    title: "Outcomes first, taste second",
-    body: "Every creative decision we make is interrogated against one question: does this actually serve your growth?",
+    title: "Generamos confianza",
+    body: "Enseñamos cómo funciona antes de pedir que se confíe en ello. Trazabilidad verificable, no promesas.",
   },
   {
-    title: "All in or nothing",
-    body: "We take on fewer projects so we can give each one everything. When we commit to your brand, we're fully present.",
+    title: "Entregamos resultados",
+    body: "El proyecto termina cuando la operación cambia de verdad, no cuando se entrega el código.",
   },
   {
-    title: "Human-first, always",
-    body: "Behind every brand is a person with a real story and real stakes. We never lose sight of that.",
+    title: "Somos ágiles y flexibles",
+    body: "Nos adaptamos al proceso que ya existe en vez de pedir que la empresa se adapte al software.",
+  },
+  {
+    title: "Traducimos tech a negocio",
+    body: "Explicamos en el idioma de quien decide, no en el de quien programa.",
   },
 ];
 
@@ -89,7 +114,7 @@ export function AboutPanel() {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="About the studio"
+        aria-label="Sobre Bloxtek"
         data-lenis-prevent
         className={`fixed inset-y-0 right-0 z-[70] w-full max-w-[640px] overflow-y-auto rounded-l-2xl bg-[#131313] text-white shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:w-1/2 ${
           open ? "translate-x-0" : "pointer-events-none translate-x-full"
@@ -101,7 +126,7 @@ export function AboutPanel() {
             <div className="flex items-center gap-3">
               <Star />
               <h2 className="font-neue text-lg tracking-wide text-white">
-                About the studio
+                Sobre Bloxtek
               </h2>
             </div>
 
@@ -134,32 +159,25 @@ export function AboutPanel() {
             ))}
           </div>
 
-          {/* Imagen (placeholder) */}
-          <div className="mb-12 flex aspect-4/3 w-full items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br from-[#0f172a] to-[#1e1b4b]">
-            <p className="font-mono text-sm text-white/40">
-              [ Imagen: Where clarity meets creativity ]
-            </p>
-          </div>
-
           {/* Listas */}
           <div className="flex flex-col">
-            <Row title="Clients">
+            <Row title="Plataformas propias">
               <ul className="flex flex-col gap-1 text-body text-white">
-                {clients.map((c) => (
+                {platforms.map((c) => (
                   <li key={c}>{c}</li>
                 ))}
               </ul>
             </Row>
 
-            <Row title="Projects">
+            <Row title="Sobre qué construimos">
               <ul className="flex flex-col gap-1 text-body text-white">
-                {projects.map((p) => (
+                {standards.map((p) => (
                   <li key={p}>{p}</li>
                 ))}
               </ul>
             </Row>
 
-            <Row title="Our Principles">
+            <Row title="Nuestros compromisos">
               <div className="flex flex-col gap-8">
                 {principles.map((p) => (
                   <div key={p.title} className="flex flex-col gap-2">
