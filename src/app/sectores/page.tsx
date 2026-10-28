@@ -11,8 +11,6 @@ export const metadata: Metadata = {
 export default function SectoresPage() {
   return (
     <>
-      {/* Mismo montaje que la home: el footer queda sticky detrás y la sección
-          de arriba se desliza por encima descubriéndolo al final. */}
       <div className="relative">
         <div className="relative z-10 bg-background">
           <Sectors />

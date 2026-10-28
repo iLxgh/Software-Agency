@@ -2,7 +2,6 @@
 
 import { useSyncExternalStore } from "react";
 
-/** Estado abierto/cerrado del panel "About" (drawer que entra desde la derecha). */
 let open = false;
 const listeners = new Set<() => void>();
 
@@ -33,7 +32,6 @@ function getSnapshot() {
   return open;
 }
 
-/** Estado reactivo del panel About. */
 export function useAboutOpen() {
   return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }

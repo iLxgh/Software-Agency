@@ -1,7 +1,3 @@
-/**
- * Rutas de assets estáticos servidos desde /public.
- * Usa estas constantes para evitar strings mágicos en componentes.
- */
 export const images = {
   hero: "/images/hero",
   general: "/images/general",
@@ -12,8 +8,6 @@ export const images = {
 } as const;
 
 export const media = {
-  video: "/media/video",
-  processVideos: "/media/video/process-videos",
   audio: "/media/audio",
 } as const;
 

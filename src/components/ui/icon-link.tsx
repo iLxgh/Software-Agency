@@ -11,9 +11,9 @@ type IconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   icon: LucideIcon;
   iconSize?: IconGlyphSize;
   iconVariant?: IconGlyphVariant;
-  /** Anima el pop del ícono en la entrada. */
+
   iconAnimateIn?: boolean;
-  /** Retraso del pop del ícono, en segundos. */
+
   iconDelay?: number;
   children: ReactNode;
   ref?: Ref<HTMLAnchorElement>;

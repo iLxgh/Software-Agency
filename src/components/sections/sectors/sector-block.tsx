@@ -11,15 +11,8 @@ import type { Sector } from "./slides";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-/** Expo-out: se mueve desde el primer frame y frena muy largo. La misma del
- *  resto de hovers del sitio, para que todo tenga el mismo tacto. */
 const EASE_OUT = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
-/**
- * Las tres partes del bloque. El orden importa: es el argumento de venta —
- * primero lo que el cliente ya sabe, luego lo que no sabía, y al final la
- * salida.
- */
 const PARTS = [
   { key: "problema", label: "El problema", icon: CircleDot },
   { key: "riesgo", label: "El riesgo no visible", icon: AlertTriangle },
@@ -28,9 +21,9 @@ const PARTS = [
 
 type SectorBlockProps = Sector & {
   index: number;
-  /** Lado desde el que entra deslizándose el bloque; se alterna. */
+
   fromDir: "left" | "right";
-  /** El primero del grupo va sin divisor superior. */
+
   first?: boolean;
 };
 
@@ -50,9 +43,6 @@ export function SectorBlock({
 
   const values = { problema, riesgo, solucion };
 
-  // Entrada tomada de las cards de Process: el bloque entero se desliza desde
-  // un lado y, mientras llega, el título hace su reveal y las tres partes
-  // suben escalonadas.
   useGSAP(
     () => {
       const root = rootRef.current;
@@ -67,7 +57,6 @@ export function SectorBlock({
         root.querySelectorAll("[data-part]"),
       );
 
-      // Oculta antes del primer paint para evitar el flash.
       gsap.set([root, heading], { autoAlpha: 0 });
 
       let split: SplitText | null = null;
@@ -77,7 +66,6 @@ export function SectorBlock({
         if (!titleRef.current) return;
         split = new SplitText(heading, { type: "words", mask: "words" });
 
-        // Aire para las descendentes, que el mask recorta.
         split.words.forEach((w) => {
           const unit = w as HTMLElement;
           unit.style.paddingBottom = "8px";
@@ -137,19 +125,14 @@ export function SectorBlock({
     <article
       ref={rootRef}
       id={id}
-      // scroll-mt: los anclas del índice caen por debajo del navbar fijo si no
-      // se les reserva su alto.
+
       className={cx(
         "scroll-mt-32 py-16 lg:py-20",
-        // El primero no lleva divisor: ya lo pone la etiqueta que encabeza el
-        // grupo, y con los dos quedaba una doble línea.
+
         !first && "border-t border-foreground/15",
       )}
     >
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
-        {/* Columna izquierda: numeración, nombre y plataforma. Sticky en
-            escritorio, para que el sector siga a la vista mientras se leen las
-            tres partes. */}
         <div className="lg:w-[30%] lg:shrink-0">
           <div className="lg:sticky lg:top-32">
             <span className="text-[11px] font-bold tracking-[0.16em] text-foreground/40 tabular-nums uppercase">
@@ -171,10 +154,6 @@ export function SectorBlock({
           </div>
         </div>
 
-        {/* Columna derecha: problema → riesgo → solución.
-            Tres tarjetas sueltas y no un bloque con divisorias: con su propia
-            sombra cada una se lee como una pieza, que es lo que pide una
-            secuencia de tres pasos. */}
         <div className="flex flex-1 flex-col gap-3">
           {PARTS.map(({ key, label, icon: Icon }) => (
             <div
@@ -182,18 +161,16 @@ export function SectorBlock({
               data-part
               className={cx(
                 "group relative overflow-hidden rounded-2xl p-6 sm:p-8",
-                // El riesgo es el argumento fuerte: se destaca sobre los otros.
+
                 key === "riesgo" ? "bg-card" : "bg-background",
                 "shadow-[0_2px_16px_rgba(0,0,0,0.06)]",
-                // Hover: la tarjeta se levanta y la sombra crece con ella.
+
                 "transition-[translate,box-shadow] duration-500",
                 EASE_OUT,
                 "hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(0,0,0,0.12)]",
                 "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
               )}
             >
-              {/* Barra de acento: crece desde arriba, mismo gesto que el
-                  recuadro gris de la navbar pero en vertical. */}
               <span
                 aria-hidden
                 className={cx(

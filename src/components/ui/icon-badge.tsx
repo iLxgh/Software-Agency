@@ -21,13 +21,12 @@ type IconBadgeProps = {
   size?: IconGlyphSize;
   variant?: IconGlyphVariant;
   className?: string;
-  /** Anima la entrada con un "pop" (escala + rotación). */
+
   animateIn?: boolean;
-  /** Retraso del pop, en segundos. */
+
   delay?: number;
 };
 
-/** Decorative icon bubble for use inside links (e.g. arrow badges next to a CTA label). */
 export function IconBadge({
   icon: Icon,
   size = "md",

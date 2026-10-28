@@ -18,7 +18,7 @@ export function HeroContent() {
   const discoverRef = useRef<HTMLAnchorElement>(null);
 
   useMagnetic(discoverRef);
-  // La flecha apunta hacia abajo: baja y regresa desde arriba.
+
   useArrowHover(discoverRef, { direction: "down" });
 
   useGSAP(
@@ -84,9 +84,7 @@ export function HeroContent() {
       <div className="mt-8 flex flex-wrap items-end justify-between gap-8">
         <IconLink
           ref={discoverRef}
-          // Apuntaba a #meeting, o sea al calendario: el botón prometía "las
-          // cuatro soluciones" y aterrizaba en una petición de reunión.
-          // #approach son literalmente las cuatro tarjetas.
+
           href="#approach"
           onClick={(e) => {
             e.preventDefault();

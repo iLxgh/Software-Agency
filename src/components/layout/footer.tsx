@@ -19,8 +19,6 @@ const socials = [
   { label: "Instagram", href: "#" },
 ];
 
-// El footer sí lista los destinos en plano: aquí hay sitio de sobra y no hace
-// falta agrupar nada bajo un desplegable como en la navbar.
 const navLinks = [
   { label: "Cómo trabajamos", href: "#approach" },
   { label: "Tecnología", href: "#stack" },
@@ -30,7 +28,6 @@ const navLinks = [
   { label: "Contacto", href: "#contacto" },
 ];
 
-/** Prompt precargado al abrir el chat de cada agente. */
 const aiPrompt = `Estoy buscando un aliado tecnológico en México especializado en blockchain para proyectos de:
 - Identidad digital y credenciales verificables
 - Firma electrónica avanzada (cumpliendo NOM-151)
@@ -42,8 +39,6 @@ const aiPrompt = `Estoy buscando un aliado tecnológico en México especializado
 
 const encodedPrompt = encodeURIComponent(aiPrompt);
 
-/** Logos de AI (PNG en /public/images/ia). Cada uno abre un chat nuevo con el
-    prompt precargado vía query param (`?q=`). */
 const aiTools = [
   {
     name: "ChatGPT",
@@ -57,7 +52,7 @@ const aiTools = [
   },
   {
     name: "Gemini",
-    // Google Search en modo IA (udm=50) con el prompt precargado.
+
     href: `https://www.google.com/search?udm=50&aep=11&q=${encodedPrompt}`,
     logo: `${images.ia}/Gemini.png`,
   },
@@ -77,8 +72,6 @@ const linkClass =
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
 
-  // Blur que se aclara mientras el footer se descubre: ligado al scroll de
-  // Process (el hermano anterior, que es lo que lo va destapando).
   useGSAP(
     () => {
       const footer = footerRef.current;
@@ -90,8 +83,6 @@ export function Footer() {
       ).matches;
       if (reduce) return;
 
-      // GSAP no interpola `filter: blur()` nativamente: se anima un proxy y se
-      // aplica en onUpdate.
       const state = { blur: 12 };
       const apply = () => {
         footer.style.filter = state.blur ? `blur(${state.blur}px)` : "";
@@ -103,10 +94,6 @@ export function Footer() {
         ease: "none",
         onUpdate: apply,
         scrollTrigger: {
-          // El descubrimiento dura exactamente el alto del footer (no 100vh), así
-          // que el blur se va a 0 en esa distancia: desde que Process empieza a
-          // destaparlo (su borde inferior al fondo de la pantalla) hasta que el
-          // footer queda completo.
           trigger: process,
           start: "bottom bottom",
           end: () => `+=${footer.offsetHeight}`,
@@ -126,26 +113,21 @@ export function Footer() {
   return (
     <footer
       ref={footerRef}
-      // Footer reveal: queda FIJO detrás (sticky, z-0) mientras Process (opaco,
-      // z-10) se desliza hacia arriba descubriéndolo al llegar a su final.
+
       className="sticky bottom-0 z-0 overflow-hidden bg-[#131313] text-white"
       aria-label="Footer"
     >
-      {/* Ruido local: sobre el fondo negro, con blend que aclara. */}
       <NoiseBackground
         className="absolute inset-0 h-full w-full mix-blend-screen"
         opacity={0.05}
       />
 
-      {/* divisor: respeta el ancho del contenedor */}
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="border-t border-white/10" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 pt-24 pb-12 sm:px-6 lg:px-8">
-        {/* --- Superior: enlaces + descripción --- */}
         <div className="mb-32 grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
-          {/* Contacto */}
           <div className="flex flex-col gap-6 md:col-span-3">
             <div>
               <h4 className="mb-2 font-neue text-sm text-white/50">Contact</h4>
@@ -162,14 +144,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navegación — misma estructura que Contact (label + línea, luego
-              lista) para que los links queden al mismo nivel Y que los socials. */}
           <div className="flex flex-col gap-6 md:col-span-3">
             <div>
               <h4 className="mb-2 font-neue text-sm text-white/50">
                 Navigation
               </h4>
-              {/* placeholder invisible del alto del email, para alinear la lista */}
+
               <span aria-hidden className="invisible block font-neue text-base">
                 &nbsp;
               </span>
@@ -179,9 +159,7 @@ export function Footer() {
                 <a
                   key={l.label}
                   href={l.href}
-                  // Solo se interceptan las anclas. `/sectores` es una ruta y
-                  // tiene que navegar; si se intercepta, `scrollToSection`
-                  // acabaría buscando un selector inválido y no pasaría nada.
+
                   onClick={
                     l.href.startsWith("#")
                       ? (e) => {
@@ -198,7 +176,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Descripción — alineada al borde derecho, como la sección de IA. */}
           <div className="md:col-span-6 lg:col-span-5 lg:col-start-8">
             <p className="ml-auto max-w-md text-right font-neue leading-relaxed text-white/50">
               {footerText}
@@ -206,16 +183,13 @@ export function Footer() {
           </div>
         </div>
 
-        {/* --- Inferior: logo grande + sección AI --- */}
         <div className="flex flex-col items-end justify-between gap-12 md:flex-row md:gap-0">
-          {/* Logo */}
           <div className="w-full md:w-auto">
             <h2 className="font-baskerville text-7xl leading-none tracking-wider text-white italic md:text-[9rem]">
               BLOXTEK
             </h2>
           </div>
 
-          {/* AI + copyright */}
           <div className="flex w-full flex-col items-start gap-6 pb-2 md:w-auto md:items-end">
             <span className="font-mono text-xs tracking-widest text-white uppercase">
               (Ask AI about BLOXTEK)

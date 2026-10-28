@@ -1,11 +1,10 @@
 export type StackCard = {
-  /** Numeración visible de la card. */
   index: string;
-  /** Etiqueta corta encima del título. */
+
   eyebrow: string;
-  /** Admite salto de línea (\n) para controlar el corte. */
+
   title: string;
-  /** Cada elemento se pinta como un badge. */
+
   items: string[];
 };
 
@@ -42,21 +41,12 @@ export const stackCards: StackCard[] = [
   },
 ];
 
-/**
- * Textos de la sección. Los marcados con PENDIENTE los redacté yo para
- * rellenar el formato heredado de Services — cámbialos cuando tengas los
- * definitivos.
- */
 export const stackIntro = {
-  /** PENDIENTE — etiqueta junto al check. */
   label: "Lo que ponemos sobre la mesa",
 
-  /** Texto central, partido en dos párrafos. */
-  overview1:
-    "No partimos de una tecnología de moda para buscar dónde meterla.",
+  overview1: "No partimos de una tecnología de moda para buscar dónde meterla.",
   overview2:
     "Partimos del problema de tu sector y elegimos, de esta lista, solo lo que se necesita.",
 
-  /** Palabra gigante de fondo, arriba a la derecha. Un renglón por línea. */
   brandWord: "tecnología\ny\nsectores",
 };

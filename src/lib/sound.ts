@@ -3,9 +3,8 @@
 import { useSyncExternalStore } from "react";
 import { media } from "@/lib/assets";
 
-/** Taps de HOVER: se intercalan al azar para no ser repetitivos. */
 const HOVER_FILES = ["tap-2.mp3", "tap-3.mp3", "tap-4.mp3", "tap-5.mp3"];
-/** Tap de CLICK. */
+
 const CLICK_FILE = "main-tap.mp3";
 const AMBIENT_FILE = "Space.mp3";
 const STORAGE_KEY = "bloxtek:sound-enabled";
@@ -31,20 +30,14 @@ function init() {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored !== null) enabled = stored === "true";
-  } catch {
-    // localStorage no disponible: se queda con el default.
-  }
+  } catch {}
   hoverSounds = HOVER_FILES.map(load);
   clickSound = load(CLICK_FILE);
   ambient = load(AMBIENT_FILE);
   ambient.loop = true;
-  ambient.volume = 0.12; // muy bajito, de fondo
+  ambient.volume = 0.12;
 }
 
-/**
- * Arranca/pausa el ambiente según el estado. Debe llamarse tras un gesto del
- * usuario (los navegadores bloquean el autoplay sin interacción).
- */
 export function ensureAmbient() {
   init();
   if (!ambient) return;
@@ -59,14 +52,11 @@ function play(audio: HTMLAudioElement | null) {
   if (!audio) return;
   try {
     audio.currentTime = 0;
-    // El navegador puede bloquear el play antes del primer gesto: se ignora.
+
     void audio.play().catch(() => {});
-  } catch {
-    // no-op
-  }
+  } catch {}
 }
 
-/** Hover: reproduce un tap al azar (evitando repetir el inmediato anterior). */
 export function playTap() {
   init();
   if (!enabled || hoverSounds.length === 0) return;
@@ -78,7 +68,6 @@ export function playTap() {
   play(hoverSounds[i]);
 }
 
-/** Click: reproduce el main-tap. */
 export function playClick() {
   init();
   if (!enabled) return;
@@ -94,9 +83,7 @@ export function setSoundEnabled(value: boolean) {
   enabled = value;
   try {
     window.localStorage.setItem(STORAGE_KEY, String(value));
-  } catch {
-    // no-op
-  }
+  } catch {}
   ensureAmbient();
   emit();
 }
@@ -117,7 +104,6 @@ function getSnapshot() {
   return enabled;
 }
 
-/** Estado on/off reactivo del sonido (para la bocina de la navbar). */
 export function useSoundEnabled() {
   return useSyncExternalStore(subscribe, getSnapshot, () => true);
 }

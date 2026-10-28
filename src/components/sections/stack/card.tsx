@@ -9,11 +9,6 @@ import type { StackCard } from "./slides";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-/**
- * Card sin imagen: la jerarquía la llevan la tipografía y los badges. Entra al
- * llegar a ~2/3 de la pantalla con el mismo pop desde abajo-derecha que las
- * cards de Services, seguido del reveal del título y del escalonado de badges.
- */
 export function Card({ index, eyebrow, title, items }: StackCard) {
   const rootRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -33,7 +28,6 @@ export function Card({ index, eyebrow, title, items }: StackCard) {
         listRef.current?.children ?? [],
       );
 
-      // Oculta antes del primer paint para evitar el flash.
       gsap.set([root, heading], { autoAlpha: 0 });
 
       let split: SplitText | null = null;
@@ -101,7 +95,6 @@ export function Card({ index, eyebrow, title, items }: StackCard) {
       ref={rootRef}
       className="w-[min(600px,88vw)] rounded-2xl bg-white p-7 text-foreground sm:p-9"
     >
-      {/* Fila superior: numeración + etiqueta a la izquierda, conteo a la derecha. */}
       <div className="flex items-center justify-between gap-4">
         <span className="text-[10px] font-bold tracking-[0.14em] text-foreground/40 uppercase">
           {index} — {eyebrow}
@@ -118,14 +111,11 @@ export function Card({ index, eyebrow, title, items }: StackCard) {
         {title}
       </h3>
 
-      {/* Regla de acento: separa el titular de la lista sin meter otra línea. */}
       <span
         aria-hidden
         className="mt-5 block h-[3px] w-10 rounded-full bg-brand"
       />
 
-      {/* Badges: la lista venía separada por "·"; como chips se lee de un
-          vistazo y el bloque no queda como un párrafo denso. */}
       <ul ref={listRef} className="mt-6 flex flex-wrap gap-2">
         {items.map((item) => (
           <li

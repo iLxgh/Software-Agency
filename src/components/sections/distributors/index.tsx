@@ -15,10 +15,6 @@ import { ENTRANCE } from "@/lib/motion";
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
 type DistributorsProps = {
-  /**
-   * "crossed" = dos cintas giradas en sentidos opuestos que se cruzan por el
-   * centro. "straight" = las dos rectas, una encima de otra.
-   */
   variant?: "crossed" | "straight";
 };
 
@@ -49,11 +45,6 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
           (el) => new SplitText(el, { type: "words", mask: "words" }),
         );
 
-        // Aire para lo que se sale de la caja de cada palabra y el mask
-        // recortaría: las descendentes por abajo, y por la derecha tanto la
-        // inclinación de la itálica ("mercado?") como el redondeo subpíxel de
-        // la última letra ("¿Quieres"). Cada padding se compensa con un margen
-        // negativo igual, así que el texto no se mueve.
         splits.forEach((s) =>
           s.words.forEach((w) => {
             const unit = w as HTMLElement;
@@ -111,11 +102,6 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
   const crossed = variant === "crossed";
 
   return (
-    // z-10 + fondo opaco: se pinta por encima del footer, que es sticky.
-    //
-    // El pb de aquí va igualado al pt de la cabecera: son los dos huecos que
-    // separan el contenido de los bordes de la sección (el divisor de arriba y
-    // el arranque de la siguiente), y así quedan simétricos.
     <section
       id="distribuidores"
       className="relative z-10 bg-background pb-16 text-foreground lg:pb-20"
@@ -126,7 +112,6 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
         opacity={0.08}
       />
 
-      {/* divisor: respeta el ancho del contenedor */}
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="border-t border-foreground/20" />
       </div>
@@ -135,8 +120,6 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
         ref={headerRef}
         className="relative z-10 mx-auto max-w-[1400px] px-4 pt-16 pb-6 text-center sm:px-6 lg:px-8 lg:pt-20"
       >
-        {/* Etiqueta de sección, alineada a la izquierda como en el resto del
-            sitio aunque el titular vaya centrado. */}
         <div className="mb-14 flex items-center gap-3 text-left">
           <IconBadge icon={Check} size="sm" variant="brand" />
           <span data-reveal className="font-neue text-base">
@@ -173,15 +156,7 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
         </a>
       </div>
 
-      {/* --- Las cintas ---
-          En "crossed" van en absoluto sobre el mismo centro, giradas en
-          sentidos contrarios y separadas un pelín en vertical: se solapan por
-          el medio y se abren hacia los lados. El inset-x negativo evita que las
-          esquinas de la banda girada dejen hueco en las orillas. */}
       {crossed ? (
-        // Alto ajustado a lo que ocupan las dos cintas giradas: el sobrante de
-        // esta caja se reparte arriba y abajo, y si sobra mucho falsea la
-        // simetría con el pt de la cabecera.
         <div className="relative isolate h-[200px] overflow-hidden sm:h-[215px]">
           <div className="absolute inset-x-[-8%] top-1/2 -mt-7 -translate-y-1/2 -rotate-3">
             <Ribbon
@@ -200,8 +175,6 @@ export function Distributors({ variant = "crossed" }: DistributorsProps) {
           </div>
         </div>
       ) : (
-        // Sin pb propio: el hueco hasta el borde lo pone el pb del <section>,
-        // igualado al pt de la cabecera.
         <div className="flex flex-col">
           <Ribbon
             items={ribbonItems}

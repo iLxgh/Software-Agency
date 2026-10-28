@@ -6,30 +6,14 @@ import { IconBadge } from "@/components/ui/icon-badge";
 import { useAboutOpen, closeAbout } from "@/lib/about-panel";
 import { lockScroll, unlockScroll } from "@/lib/scroll-to";
 
-/**
- * Contenido del panel, sacado de la página "Nosotros" de bloxtek.com.
- *
- * Sustituye a los datos de la plantilla, que listaban como clientes de Bloxtek
- * a Vinamilk, OH Architecture o la University of Sydney, y como premios varios
- * Awwwards y FWA. Son empresas y galardones reales de OTRA agencia: estaban
- * ahí como relleno y publicarlos habría sido atribuirse credenciales ajenas.
- *
- * OJO con lo que NO hay. Su web no publica clientes, ni premios, ni año de
- * fundación, ni nombres del equipo, así que esos bloques no se han "rellenado
- * con otra cosa": se han sustituido por lo único verificable que sí publican
- * —las plataformas propias y los estándares sobre los que construyen—. Si
- * alguien de Bloxtek aporta clientes o cifras reales, este es el sitio.
- */
 const intro = [
   "Somos un socio tecnológico, no una fábrica de software. Construimos a partir de problemas reales de negocio, no de la tecnología que esté de moda.",
   "Diagnosticamos la operación antes de proponer nada, y de ahí sale el camino: una plataforma propia, desarrollo a medida o ambos. A veces, la respuesta es que todavía no hace falta software.",
   "Nos quedamos hasta que el resultado es real. Trabajamos sobre estándares abiertos y con infraestructura con validez legal en México, porque lo que construimos tiene que sostenerse ante una auditoría, no solo en una demo.",
 ];
 
-/** Lo único que su web afirma de sí misma como dato. */
 const meta = ["MONTERREY, MÉXICO", "NODO EN LACNET"];
 
-/** Las cuatro plataformas propias. */
 const platforms = [
   "LegalBlox — contratos con validez legal",
   "EduBlox — credenciales verificables",
@@ -37,7 +21,6 @@ const platforms = [
   "Wallox — billetera digital",
 ];
 
-/** Estándares e infraestructura sobre los que construyen. */
 const standards = [
   "W3C — credenciales verificables",
   "Hyperledger",
@@ -46,10 +29,6 @@ const standards = [
   "NOM-151-SCFI-2016 — conservación de mensajes de datos",
 ];
 
-/**
- * Los cuatro compromisos, tal como los enuncia su web. Las bajadas las
- * redacté yo a partir del resto de la página — PENDIENTE de validar.
- */
 const principles = [
   {
     title: "Generamos confianza",
@@ -69,7 +48,6 @@ const principles = [
   },
 ];
 
-/** Estrella morada reutilizable (mismo sistema de íconos del proyecto). */
 function Star() {
   return (
     <IconBadge
@@ -84,7 +62,6 @@ function Star() {
 export function AboutPanel() {
   const open = useAboutOpen();
 
-  // Al abrir: bloquea el scroll de la página y escucha Esc. Al cerrar/desmontar: libera.
   useEffect(() => {
     if (!open) return;
     lockScroll();
@@ -100,7 +77,6 @@ export function AboutPanel() {
 
   return (
     <>
-      {/* Backdrop: capa oscura + blur sobre la landing */}
       <div
         aria-hidden
         onClick={closeAbout}
@@ -109,8 +85,6 @@ export function AboutPanel() {
         }`}
       />
 
-      {/* Panel (drawer): entra de derecha a izquierda. `data-lenis-prevent` para
-          que Lenis no capture el wheel dentro del panel. */}
       <aside
         role="dialog"
         aria-modal="true"
@@ -121,7 +95,6 @@ export function AboutPanel() {
         }`}
       >
         <div className="p-8 md:p-10">
-          {/* Cabecera */}
           <div className="mb-10 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Star />
@@ -143,7 +116,6 @@ export function AboutPanel() {
             </button>
           </div>
 
-          {/* Intro */}
           <div className="mb-12 flex flex-col gap-6">
             {intro.map((p, i) => (
               <p key={i} className="text-body leading-relaxed text-white">
@@ -152,14 +124,12 @@ export function AboutPanel() {
             ))}
           </div>
 
-          {/* Metadatos */}
           <div className="mb-6 flex flex-wrap gap-8 font-mono text-[11px] tracking-widest text-white/40 uppercase md:gap-14">
             {meta.map((m) => (
               <span key={m}>{m}</span>
             ))}
           </div>
 
-          {/* Listas */}
           <div className="flex flex-col">
             <Row title="Plataformas propias">
               <ul className="flex flex-col gap-1 text-body text-white">

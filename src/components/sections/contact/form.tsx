@@ -10,12 +10,6 @@ import { projectStages } from "./slides";
 
 gsap.registerPlugin(useGSAP);
 
-/**
- * Inputs sin caja: solo el placeholder en gris y una línea casi invisible
- * abajo. La línea no es decorativa — sin ninguna pista visual el campo no se
- * lee como campo. Al enfocar pasa a color de marca, que es el único estado
- * visible y hace de indicador de foco accesible.
- */
 const FIELD =
   "w-full border-b border-foreground/10 bg-transparent py-3 font-neue text-base text-foreground placeholder:text-foreground/35 transition-colors focus:border-brand focus:outline-none";
 
@@ -46,12 +40,9 @@ export function ContactForm() {
   const set = (key: keyof FormState) => (value: string) =>
     setValues((v) => ({ ...v, [key]: value }));
 
-  // El paso 1 solo avanza con nombre y un email con pinta de email.
   const canContinue =
     values.nombre.trim().length > 1 && /.+@.+\..+/.test(values.email);
 
-  // Cada cambio de panel entra desde abajo. Al depender de `step` y `sent`,
-  // sirve igual para los dos pasos y para la pantalla de confirmación.
   useGSAP(
     () => {
       const reduce = window.matchMedia(
@@ -71,25 +62,21 @@ export function ContactForm() {
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // PENDIENTE: no hay backend. Aquí va el POST al endpoint o al servicio de
-    // formularios; de momento solo pasa a la pantalla de confirmación.
+
     setSent(true);
   };
 
   return (
     <div
       ref={boxRef}
-      // El ancho lo fija el contenedor de la sección; aquí solo el tope y el
-      // alto mínimo, para que la caja no dé un salto al cambiar de paso.
+
       className="flex w-full max-w-[560px] flex-col rounded-2xl bg-white p-7 shadow-[0_10px_50px_rgba(0,0,0,0.12)] sm:min-h-[500px] sm:p-10"
     >
-      {/* Badge de paso, arriba a la izquierda. */}
       <div className="flex items-center justify-between gap-4">
         <span className="rounded-lg bg-foreground/5 px-3 py-1.5 text-[11px] font-bold tracking-[0.14em] text-foreground/50 uppercase">
           {sent ? "Enviado" : `Paso ${step} de 2`}
         </span>
 
-        {/* Barra de progreso: dos tramos, uno por paso. */}
         <span aria-hidden className="flex gap-1.5">
           {[1, 2].map((i) => (
             <span
@@ -186,8 +173,7 @@ export function ContactForm() {
                   <legend className="text-[11px] font-bold tracking-[0.14em] text-foreground/40 uppercase">
                     ¿En qué etapa estás?
                   </legend>
-                  {/* Chips en vez de otro campo de texto: la respuesta útil
-                      son tres opciones, no un párrafo. */}
+
                   <div className="mt-3 flex flex-wrap gap-2">
                     {projectStages.map((stage) => {
                       const active = values.etapa === stage;
@@ -214,7 +200,6 @@ export function ContactForm() {
             )}
           </div>
 
-          {/* Acciones, ancladas al pie de la caja. */}
           <div className="mt-8 flex items-center justify-between gap-4">
             {step === 2 ? (
               <button

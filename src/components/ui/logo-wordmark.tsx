@@ -1,17 +1,5 @@
 import type { CSSProperties } from "react";
 
-/**
- * Logotipo "Bloxtek" como SVG inline, letra a letra.
- *
- * Cada letra es su propio path, así que se pueden animar por separado como si
- * fueran caracteres de texto — pero conservando la tipografía exacta de la
- * marca, que no es ninguna de las fuentes del proyecto.
- *
- * Tres tipos de trazo:
- *  - `letter` : las siete letras, B L O X T E K.
- *  - `accent` : la barra verde de la K.
- *  - `mark`   : el símbolo ®, que entra aparte y al final.
- */
 export const WORDMARK_PATHS: {
   kind: "letter" | "accent" | "mark";
   d: string;
@@ -58,7 +46,6 @@ export const WORDMARK_PATHS: {
   },
 ];
 
-/** Alto del viewBox. Las letras entran desde justo debajo de esta línea. */
 export const WORDMARK_HEIGHT = 19;
 
 export function LogoWordmark({
@@ -69,8 +56,6 @@ export function LogoWordmark({
   style?: CSSProperties;
 }) {
   return (
-    // Sin `overflow-visible`: el propio viewport del SVG hace de máscara, y es
-    // lo que permite que las letras entren desde abajo sin asomar antes.
     <svg
       viewBox="0 0 143 19"
       fill="none"
@@ -84,8 +69,7 @@ export function LogoWordmark({
         <path
           key={i}
           d={p.d}
-          // Las letras y el ® heredan el color del contenedor; el acento
-          // mantiene el verde de la marca.
+
           fill={
             p.kind === "accent" ? "var(--brand-green, #98C11D)" : "currentColor"
           }

@@ -1,27 +1,16 @@
 export type Sector = {
   id: string;
   name: string;
-  /** Qué vive hoy el cliente. */
+
   problema: string;
-  /** El dato que no sabía que le afectaba. Es la parte con más valor. */
+
   riesgo: string;
-  /** Qué hacemos al respecto. */
+
   solucion: string;
-  /** Plataforma propia que lo resuelve; se pinta como badge. */
+
   plataforma?: string;
 };
 
-/**
- * Cuatro sectores, los que ya tienen contenido escrito en bloxtek.com. El resto
- * (Gobierno, Salud, Turismo, Corporativo) están anunciados allí pero vacíos: se
- * añaden aquí cuando haya texto real, no antes.
- *
- * La estructura Problema → Riesgo no visible → Solución viene de la web actual
- * y se respeta tal cual: es un marco consultivo, no una lista de features.
- *
- * Los campos marcados PENDIENTE los redacté yo porque en la web original ese
- * apartado no existía. Revísalos.
- */
 export const sectors: Sector[] = [
   {
     id: "legal",
@@ -50,10 +39,10 @@ export const sectors: Sector[] = [
     name: "Inmobiliario",
     problema:
       "Múltiples documentos físicos, firmas que exigen presencia simultánea y una gestión opaca del expediente.",
-    // PENDIENTE — en la web actual este sector solo tiene "Problema".
+
     riesgo:
       "Cada firma presencial alarga el cierre y suma un punto donde la operación se puede caer; sin expediente verificable, probar qué se firmó y cuándo depende del archivo físico.",
-    // PENDIENTE
+
     solucion:
       "RealVext lleva el ciclo de compraventa y renta a digital: expediente único, firma remota con validez legal y trazabilidad de cada movimiento.",
     plataforma: "RealVext",
@@ -63,7 +52,7 @@ export const sectors: Sector[] = [
     name: "Fintech",
     problema:
       "Necesidad de velocidad frente a cumplimiento regulatorio; fricción en el onboarding y en la firma.",
-    // PENDIENTE — en la web actual este sector no tiene apartado de riesgo.
+
     riesgo:
       "Un onboarding lento pierde usuarios; uno rápido sin sellado ni trazabilidad deja la operación sin cómo demostrar cumplimiento ante el regulador.",
     solucion:
@@ -73,8 +62,7 @@ export const sectors: Sector[] = [
   {
     id: "gobierno",
     name: "Gobierno",
-    // PENDIENTE — sector sin contenido en la web actual; redacté los tres
-    // apartados. Reviso especialmente que no se prometa nada normativo de más.
+
     problema:
       "Trámites que siguen pidiendo papel y ventanilla, y expedientes repartidos entre dependencias que no se hablan entre sí.",
     riesgo:
@@ -86,18 +74,10 @@ export const sectors: Sector[] = [
 ];
 
 export type UseCase = {
-  /** A quién aplica. No siempre coincide con los sectores de arriba: aquí
-   *  entran también perfiles (RH, inversionistas, usuarios finales). */
   perfil: string;
   caso: string;
 };
 
-/**
- * Casos de uso por plataforma. El dato viene organizado plataforma → perfil →
- * caso, y así se deja: invertirlo a sector → plataforma perdería las entradas
- * de perfiles que no son ninguno de los cinco sectores (RH, e-learning,
- * inversionistas, usuarios finales…), que son casi la mitad.
- */
 export const useCasesByPlatform: Record<string, UseCase[]> = {
   LegalBlox: [
     {
@@ -191,6 +171,6 @@ export const sectorsIntro = {
   subtitle:
     "Trabajamos con instituciones y empresas que requieren resultados reales.",
   body: "No aplicamos la misma receta a todos los sectores. Entendemos los retos normativos, operativos y tecnológicos de cada industria para diseñar soluciones que realmente funcionen en su contexto.",
-  /** PENDIENTE — sectores anunciados en la web actual pero aún sin contenido. */
+
   masSectores: ["Salud", "Turismo y Entretenimiento", "Corporativo"],
 };

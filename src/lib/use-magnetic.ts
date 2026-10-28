@@ -7,15 +7,9 @@ import type { RefObject } from "react";
 gsap.registerPlugin(useGSAP);
 
 type MagneticOptions = {
-  /** Qué tanto sigue el botón al cursor (0-1). */
   strength?: number;
 };
 
-/**
- * Botón magnético: mientras el cursor está dentro, el elemento se "pega" hacia él;
- * al entrar hace un rebote de scale (baja y sube) y al salir vuelve a su posición
- * con un mini rebote elástico. Respeta prefers-reduced-motion.
- */
 export function useMagnetic<T extends HTMLElement>(
   ref: RefObject<T | null>,
   { strength = 0.35 }: MagneticOptions = {},
@@ -30,7 +24,6 @@ export function useMagnetic<T extends HTMLElement>(
       ).matches;
       if (reduce) return;
 
-      // Mientras el cursor está dentro, el botón se pega hacia él.
       const onMove = (e: MouseEvent) => {
         const r = el.getBoundingClientRect();
         const relX = e.clientX - (r.left + r.width / 2);
@@ -44,7 +37,6 @@ export function useMagnetic<T extends HTMLElement>(
         });
       };
 
-      // Al entrar: el scale baja y luego rebota hacia arriba.
       const onEnter = () => {
         gsap
           .timeline()
@@ -52,7 +44,6 @@ export function useMagnetic<T extends HTMLElement>(
           .to(el, { scale: 1.05, duration: 0.35, ease: "back.out(2.5)" });
       };
 
-      // Al salir: vuelve a su posición con mini rebote y el scale a normal.
       const onLeave = () => {
         gsap.to(el, {
           x: 0,

@@ -38,22 +38,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${neueMontreal.variable} ${neueMontrealBold.variable} ${libreBaskerville.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* El proveedor envuelve todo para que la cortina quede por encima del
-            navbar y del panel About. */}
         <PageTransitionProvider>
-          {/* Por encima de todo lo demás, incluida la cortina de transición.
-              Va en pareja con `ENTRANCE.gate` (lib/motion.ts): si se quita de
-              aquí, hay que devolver la compuerta a 0 o el hero se queda tres
-              segundos en blanco. */}
           <Preloader />
           <SmoothScroll />
           <SoundHover />
           <NoiseBackground />
-          {/* El navbar va FUERA del shell: es `fixed` y un ancestro con transform
-              rompería su posicionamiento (saltaría al top). Se desplaza aparte. */}
+
           <Navbar />
-          {/* Las secciones van en el shell para empujarlas al abrir About. El panel
-              y su backdrop quedan fuera (no se mueven). */}
+
           <LandingShell>{children}</LandingShell>
           <AboutPanel />
         </PageTransitionProvider>

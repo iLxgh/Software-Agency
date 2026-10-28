@@ -8,11 +8,6 @@ import type { CallStep } from "./slides";
 
 gsap.registerPlugin(useGSAP);
 
-/**
- * Card de "qué pasa en la llamada". Reusa el gesto de las cards de
- * Organizations: en hover aparece un recuadro morado desde abajo-derecha
- * mientras la card entera hace un mini scale.
- */
 export function StepCard({ number, title, body }: CallStep) {
   const rootRef = useRef<HTMLElement>(null);
   const accentRef = useRef<HTMLDivElement>(null);
@@ -27,7 +22,6 @@ export function StepCard({ number, title, body }: CallStep) {
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      // Estado de reposo: colapsado y desplazado a su esquina.
       gsap.set(accent, {
         autoAlpha: 0,
         scale: 0.6,
@@ -67,8 +61,6 @@ export function StepCard({ number, title, body }: CallStep) {
       onMouseLeave={() => tlRef.current?.reverse()}
       className="relative flex cursor-pointer flex-col justify-between gap-10 overflow-hidden rounded-2xl bg-white p-6 shadow-[0_0_24px_rgba(0,0,0,0.12)]"
     >
-      {/* Número en recuadro oscuro: mismo bloque que ocupa el logo en las
-          cards de Organizations, para que las dos familias rimen. */}
       <div className="flex size-[72px] shrink-0 items-center justify-center rounded-lg bg-foreground font-neue-bold text-2xl text-background">
         {number}
       </div>

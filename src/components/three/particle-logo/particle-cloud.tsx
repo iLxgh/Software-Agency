@@ -1,12 +1,5 @@
-"use client";
-
-/**
- * Las reglas del React Compiler asumen que los valores memoizados son
- * inmutables, pero el contrato de three.js/r3f es justo el contrario: los
- * uniforms y los objetos de escena se mutan en sitio (fuera del render) para no
- * recompilar el material ni recrear la geometría en cada frame.
- */
 /* eslint-disable react-hooks/immutability */
+"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
@@ -19,37 +12,32 @@ import {
 import { particleFragmentShader, particleVertexShader } from "./shaders";
 
 export type ParticleCloudProps = {
-  /** Ruta del PNG con fondo transparente. */
   src: string;
-  /** Píxeles de imagen por partícula: 2 = denso, 6 = disperso. */
+
   density?: number;
-  /** Alpha mínimo (0..1) para que un píxel genere partícula. */
+
   alphaThreshold?: number;
-  /** Tope de partículas. */
+
   maxParticles?: number;
-  /** Radio de influencia del cursor, en unidades de mundo (el logo mide 2 de alto). */
+
   radius?: number;
-  /** Cuánto se alejan las partículas del cursor, en unidades de mundo. */
+
   strength?: number;
-  /** Tamaño del punto en px (a DPR 1). */
+
   pointSize?: number;
   color?: string;
   opacity?: number;
-  /** Amplitud del movimiento en reposo, en unidades de mundo. 0 lo desactiva. */
+
   drift?: number;
-  /** Grano del campo de ruido: alto = remolinos pequeños y nerviosos. */
+
   noiseScale?: number;
-  /** Velocidad a la que evoluciona el ruido. */
+
   noiseSpeed?: number;
-  /**
-   * Retardo del cursor: fracción de la distancia que queda SIN recorrer al
-   * cabo de un segundo. 0.0001 = casi pegado al puntero, 0.05 = arrastre
-   * marcado, 0.3 = muy perezoso.
-   */
+
   follow?: number;
-  /** Fracción del contenedor que ocupa el logo (0..1). */
+
   fit?: number;
-  /** Retraso de la animación de entrada, en segundos. */
+
   revealDelay?: number;
 };
 
@@ -73,13 +61,11 @@ export function ParticleCloud({
   const { camera, gl, size } = useThree();
   const [sample, setSample] = useState<ParticleSample | null>(null);
 
-  // Uniforms creados una sola vez: el material nunca se recompila. Los cambios
-  // de props se sincronizan más abajo, escribiendo sobre `.value`.
   const uniforms = useMemo(
     () => ({
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
       uRadius: { value: radius },
-      uStrength: { value: 0 }, // 0 hasta que el cursor entra
+      uStrength: { value: 0 },
       uTime: { value: 0 },
       uDrift: { value: drift },
       uNoiseScale: { value: noiseScale },
@@ -108,7 +94,6 @@ export function ParticleCloud({
 
   useEffect(() => () => material.dispose(), [material]);
 
-  // --- Muestreo del PNG -----------------------------------------------------
   useEffect(() => {
     let cancelled = false;
     sampleImageParticles(src, { density, alphaThreshold, maxParticles })
@@ -136,7 +121,6 @@ export function ParticleCloud({
 
   useEffect(() => () => geometry?.dispose(), [geometry]);
 
-  // --- Props reactivas ------------------------------------------------------
   useEffect(() => {
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -163,7 +147,6 @@ export function ParticleCloud({
     uniforms.uPixelRatio.value = gl.getPixelRatio();
   }, [uniforms, gl, size]);
 
-  // Encaja el logo en el contenedor: 2 unidades de alto por 2*aspect de ancho.
   useEffect(() => {
     if (!sample || !(camera instanceof THREE.OrthographicCamera)) return;
     camera.zoom =
@@ -171,7 +154,6 @@ export function ParticleCloud({
     camera.updateProjectionMatrix();
   }, [camera, size, sample, fit]);
 
-  // Entrada: las partículas colapsan desde fuera hasta formar el logo.
   useEffect(() => {
     if (!sample) return;
     const reduce = window.matchMedia(
@@ -193,10 +175,9 @@ export function ParticleCloud({
     };
   }, [sample, uniforms, revealDelay]);
 
-  // --- Cursor ---------------------------------------------------------------
   const pointerTarget = useRef(new THREE.Vector3());
   const hovering = useRef(false);
-  // La fuerza objetivo se lee dentro de los listeners, no en el render.
+
   const strengthRef = useRef(strength);
   useEffect(() => {
     strengthRef.current = strength;
@@ -207,7 +188,7 @@ export function ParticleCloud({
     const ndc = new THREE.Vector2();
     const hit = new THREE.Vector3();
     const raycaster = new THREE.Raycaster();
-    // Plano invisible en z = 0, donde viven las partículas.
+
     const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 
     const reduce = window.matchMedia(
@@ -218,8 +199,6 @@ export function ParticleCloud({
       if (reduce) return;
       const rect = el.getBoundingClientRect();
 
-      // El canvas no recibe eventos (pointer-events: none), así que escuchamos
-      // en window y comprobamos a mano si el cursor cae dentro de su caja.
       const inside =
         event.clientX >= rect.left &&
         event.clientX <= rect.right &&
@@ -241,8 +220,7 @@ export function ParticleCloud({
 
       if (!hovering.current) {
         hovering.current = true;
-        // Primer contacto: sitúa el cursor de golpe para que la nube no se
-        // arrastre desde el centro, y sube la fuerza con una rampa corta.
+
         uniforms.uMouse.value.copy(hit);
         gsap.to(uniforms.uStrength, {
           value: strengthRef.current,
@@ -255,9 +233,7 @@ export function ParticleCloud({
 
     const onLeave = () => {
       hovering.current = false;
-      // Retorno elástico: el overshoot por debajo de 0 invierte la fuerza un
-      // instante, así las partículas se pasan de largo y rebotan a su sitio.
-      // Amplitud baja (0.5) = un solo rebote suave en vez de temblar.
+
       gsap.to(uniforms.uStrength, {
         value: 0,
         duration: 2.4,
@@ -271,7 +247,7 @@ export function ParticleCloud({
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    // El cursor sale de la ventana entera: no llega ningún pointermove más.
+
     document.addEventListener("pointerleave", onWindowLeave);
     window.addEventListener("pointercancel", onWindowLeave);
     return () => {
@@ -288,9 +264,7 @@ export function ParticleCloud({
 
   useFrame((state, delta) => {
     uniforms.uTime.value = state.clock.elapsedTime;
-    // El cursor del shader persigue al puntero real con retardo: de ahí sale la
-    // sensación líquida del arrastre. El exponente hace el damping
-    // independiente del framerate (mismo resultado a 60 y a 144 Hz).
+
     const k = 1 - Math.pow(followRef.current, Math.min(delta, 0.1));
     uniforms.uMouse.value.lerp(pointerTarget.current, k);
   });
@@ -298,8 +272,6 @@ export function ParticleCloud({
   if (!geometry) return null;
 
   return (
-    // frustumCulled off: el desplazamiento vive en el shader, así que la caja
-    // que three calcula no representa dónde acaban las partículas.
     <points geometry={geometry} material={material} frustumCulled={false} />
   );
 }

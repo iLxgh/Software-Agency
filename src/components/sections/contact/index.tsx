@@ -19,7 +19,6 @@ export function Contact() {
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // Entrada de la columna izquierda: pop del check + reveal de los textos.
   useGSAP(
     () => {
       const header = headerRef.current;
@@ -44,8 +43,6 @@ export function Contact() {
           (el) => new SplitText(el, { type: "words", mask: "words" }),
         );
 
-        // Aire en los dos ejes: el mask recorta las descendentes por abajo y la
-        // inclinación de la itálica por la derecha.
         splits.forEach((s) =>
           s.words.forEach((w) => {
             const unit = w as HTMLElement;
@@ -101,7 +98,6 @@ export function Contact() {
     { scope: headerRef },
   );
 
-  // Entrada escalonada de las cards de la llamada.
   useGSAP(
     () => {
       const grid = gridRef.current;
@@ -118,8 +114,7 @@ export function Contact() {
         duration: 0.8,
         stagger: 0.1,
         ease: "power3.out",
-        // Borra el transform inline al acabar: si no, se acumula con el scale
-        // del hover de la card.
+
         clearProps: "transform",
         scrollTrigger: { trigger: grid, start: "top 85%" },
       });
@@ -133,8 +128,6 @@ export function Contact() {
   );
 
   return (
-    // z-10 + fondo opaco: es la última sección, se desliza por encima del
-    // footer (sticky detrás) y lo va descubriendo al final.
     <section
       id="contacto"
       className="relative z-10 bg-background text-foreground"
@@ -145,17 +138,12 @@ export function Contact() {
         opacity={0.08}
       />
 
-      {/* divisor: respeta el ancho del contenedor */}
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="border-t border-foreground/20" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        {/* --- Texto a la izquierda, formulario a la derecha --- */}
         <div className="flex flex-col gap-14 lg:flex-row lg:items-center lg:justify-between lg:gap-20">
-          {/* Columnas proporcionales y no anchos fijos: con `justify-between`
-              y dos bloques estrechos, el sobrante se acumulaba en el centro y
-              la sección se veía hueca. */}
           <div ref={headerRef} className="max-w-xl lg:max-w-none lg:flex-1">
             <div className="mb-10 flex items-center gap-3">
               <IconBadge icon={Check} size="sm" variant="brand" />
@@ -199,7 +187,6 @@ export function Contact() {
           </div>
         </div>
 
-        {/* --- Qué pasa en la llamada --- */}
         <div className="mt-24 lg:mt-32">
           <p className="text-[11px] font-bold tracking-[0.16em] text-foreground/40 uppercase">
             Qué pasa en la llamada

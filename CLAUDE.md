@@ -69,6 +69,42 @@ Lo más sensible:
   recolorean con máscara + degradado, pero lo suyo sería exportarlos ya en el
   tono de cada paleta.
 
+# Trampas conocidas
+
+El código no lleva comentarios a propósito. Esto es lo que costó horas
+descubrir y lo que más fácil se vuelve a romper.
+
+- **GSAP absorbe los transforms de CSS.** En cuanto anima el `transform` de un
+  elemento, se traga sus propiedades `rotate`/`translate`/`scale` y las pone a
+  `none`. No se suman: si GSAP anima el transform, la posición de reposo
+  también la tiene que poner GSAP (ver `LAYOUT` en `approach/cards.tsx`).
+- **En Tailwind v4, `scale-*`, `rotate-*` y `translate-*` generan propiedades
+  sueltas**, no `transform`. Así que `transition-transform` NO anima un
+  `hover:scale-*`: va `transition-[scale]`. Se comprueba buscando la clase en
+  el CSS de `.next-check` tras un `build:check`.
+- **Tailwind no genera clases interpoladas.** `` `md:${EASE}` `` no produce
+  nada; las clases van como literales completos.
+- **`fromTo` aplica sus valores de partida AL CREARSE**, no cuando le llega el
+  turno (`immediateRender` va a `true` por defecto, también dentro de un
+  timeline y aunque esté colocado al final). Si antes hiciste un `set` para
+  esconder algo, el `from` lo pisa: hace falta `immediateRender: false`.
+- **Las posiciones `"<"` de un timeline apuntan a la animación ANTERIOR.** Al
+  añadir tweens, esa referencia se desplaza sola y rompe cosas que creías
+  simultáneas. Lo que deba ir a la vez se cuelga de una etiqueta
+  (`addLabel`), no de posiciones relativas.
+- **`ScrollTrigger.refresh()` dentro del tick de GSAP se aplaza, no se
+  ejecuta.** Si se llama desde el `onComplete` de un tween hay que sacarlo con
+  un `requestAnimationFrame`.
+- **`lockScroll()` deja el documento sin altura de scroll** (`overflow: hidden`
+  en el `<html>`). Todo lo que se monte mientras tanto calcula sus
+  ScrollTrigger contra un documento sin recorrido, y hay que remedir al
+  desbloquear. Pasa en cada navegación y en la pantalla de carga.
+- **Un Lenis parado ignora `scrollTo`**: necesita `force: true`. Sin eso, el
+  salto al inicio tras navegar no ocurre y la página nueva se destapa a la
+  altura de scroll de la anterior.
+- **Con `box-sizing: border-box`, un div de ancho 0 no mide 0**: mide lo que
+  suman sus bordes, y el `border-radius` se recorta sobre ESE ancho real.
+
 # Notas de desarrollo
 
 - **No lances `npm run build` con el dev server vivo.** Los dos escriben en

@@ -1,15 +1,5 @@
 import type { CSSProperties } from "react";
 
-/**
- * El símbolo de la marca: solo el cubo, sin el nombre.
- *
- * Se extrajo del primer `<path>` de `logo-bloxtek.svg` —el único cuyo recorrido
- * cabe en un cuadrado de 39×39; los otros diez son las letras y el ®—, porque
- * no existía el cubo suelto como asset y la pantalla de carga lo necesita
- * aparte del nombre: primero entra el símbolo y después el logotipo.
- *
- * Hereda el color del texto, así que se recolorea con `className`.
- */
 export function LogoMark({
   className,
   style,
@@ -17,18 +7,7 @@ export function LogoMark({
 }: {
   className?: string;
   style?: CSSProperties;
-  /**
-   * Engorda los trazos del cubo, en unidades del viewBox (39 de lado).
-   *
-   * Los trazos de este logo vienen convertidos a contorno relleno, así que no
-   * hay un `stroke-width` que subir. El apaño es pintarle ENCIMA un trazo del
-   * mismo color: engorda cada contorno por fuera y por dentro a partes
-   * iguales, que es justo el efecto de una tipografía más gruesa.
-   *
-   * Una unidad equivale a 1/39 del lado, así que a 64px cada unidad son ~1.6px
-   * y el grosor añadido es el doble (crece por los dos lados del contorno).
-   * Valores por encima de ~1 empiezan a cerrar los huecos del cubo.
-   */
+
   weight?: number;
 }) {
   return (

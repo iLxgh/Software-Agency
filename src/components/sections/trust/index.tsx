@@ -14,15 +14,6 @@ import { trustCards, trustIntro } from "./slides";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-/**
- * Escalera de sticky: la tarjeta N se pega a `BASE + N * STEP` del borde
- * superior, así que cada una deja asomando una franja de la anterior en lugar
- * de taparla del todo.
- *
- * En vh y no en px para que la escalera y el alto de las tarjetas escalen
- * juntos: BASE + 3*STEP + alto de tarjeta tiene que caber en la pantalla, o la
- * última quedaría cortada por abajo.
- */
 const STICK_BASE_VH = 4;
 const STICK_STEP_VH = 5;
 
@@ -60,7 +51,6 @@ export function Trust() {
           (el) => new SplitText(el, { type: "words", mask: "words" }),
         );
 
-        // Aire para las descendentes, que el mask recorta.
         splits.forEach((s) =>
           s.words.forEach((w) => {
             const unit = w as HTMLElement;
@@ -95,7 +85,7 @@ export function Trust() {
           { yPercent: 100, duration: 0.9, stagger: 0.04, ease: "power3.out" },
           badge ? "-=0.4" : 0,
         )
-          // El índice cierra: aparece cuando el titular ya se lee.
+
           .from(
             marks,
             {
@@ -122,22 +112,16 @@ export function Trust() {
   );
 
   return (
-    // Sin overflow-hidden en toda la cadena de ancestros: cortaría los sticky.
-    // z-10 + fondo opaco: es la última sección, así que se desliza por ENCIMA
-    // del footer (que queda sticky detrás) y lo va descubriendo al final.
     <section
       id="trust"
       className="relative z-10 bg-background text-foreground"
       aria-label="Generamos confianza antes de vender"
     >
-      {/* Ruido local: restaura la textura que daba el ruido global, ahora
-          tapado por el fondo opaco. */}
       <NoiseBackground
         className="pointer-events-none absolute inset-0 h-full w-full mix-blend-multiply"
         opacity={0.08}
       />
 
-      {/* divisor: respeta el ancho del contenedor */}
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="border-t border-foreground/20" />
       </div>
@@ -146,13 +130,6 @@ export function Trust() {
         ref={headerRef}
         className="mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
       >
-        {/* Fila fina: la palomita a la izquierda —convención de toda la web— y
-            el índice de los cuatro compromisos a la derecha.
-
-            El índice no es adorno: las tarjetas llegan en una escalera sticky
-            donde solo se ve una a la vez, así que sin esto no hay forma de
-            saber cuántas son ni qué viene. Y sale de los propios `eyebrow` de
-            las tarjetas, así que no hay copy nuevo que validar. */}
         <div className="mb-14 flex flex-wrap items-center justify-between gap-x-10 gap-y-5 lg:mb-20">
           <div data-badge className="flex items-center gap-3">
             <IconBadge icon={Check} size="sm" variant="brand" />
@@ -191,7 +168,7 @@ export function Trust() {
           </span>{" "}
           antes de vender.
         </h2>
-        {/* PENDIENTE — bajada redactada por mí. */}
+
         <p
           data-reveal
           className="mx-auto mt-6 max-w-xl text-center font-neue text-body leading-relaxed text-pretty text-foreground/60"
@@ -200,9 +177,6 @@ export function Trust() {
         </p>
       </div>
 
-      {/* La pila. Cada tarjeta va en su propio wrapper sticky; el wrapper ocupa
-          sitio en el flujo normal, y eso es lo que da el scroll necesario para
-          que la siguiente suba por encima. */}
       <div className="pb-[20vh]">
         {trustCards.map((card, i) => (
           <div

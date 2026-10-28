@@ -1,12 +1,6 @@
-/**
- * PENDIENTE — todo el copy de esta sección lo redacté yo a partir de lo que
- * pediste (el título del formulario) y del tono de Trust. Cámbialo cuando
- * tengas el definitivo.
- */
-
 export const contactIntro = {
   label: "Hablemos",
-  /** Etiquetas cortas bajo el párrafo. */
+
   reassurances: ["30 minutos", "Sin compromiso", "Respondemos en 24 h"],
 };
 
@@ -16,7 +10,6 @@ export type CallStep = {
   body: string;
 };
 
-/** Qué pasa en la llamada, en orden. */
 export const callSteps: CallStep[] = [
   {
     number: "01",
@@ -35,7 +28,6 @@ export const callSteps: CallStep[] = [
   },
 ];
 
-/** Etapa del proyecto: chips del paso 2, para no obligar a escribirlo todo. */
 export const projectStages = [
   "Explorando",
   "Proyecto definido",

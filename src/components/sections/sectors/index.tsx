@@ -20,15 +20,12 @@ import { ENTRANCE } from "@/lib/motion";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-/** Desvanecido de los raíles laterales en sus dos extremos. */
 const RAIL_MASK =
   "linear-gradient(to bottom, transparent, black 18%, black 82%, transparent)";
 
 export function Sectors() {
   const headerRef = useRef<HTMLDivElement>(null);
-  // Mientras la cortina de la transición tapa, la cabecera se queda esperando:
-  // si entrara ahí debajo, al destaparse ya habría terminado y la página
-  // aparecería estática.
+
   const { covering } = usePageTransition();
 
   useGSAP(
@@ -55,8 +52,6 @@ export function Sectors() {
           (el) => new SplitText(el, { type: "words", mask: "words" }),
         );
 
-        // Aire en los dos ejes: el mask recorta las descendentes por abajo y la
-        // inclinación de la itálica por la derecha.
         splits.forEach((s) =>
           s.words.forEach((w) => {
             const unit = w as HTMLElement;
@@ -78,8 +73,6 @@ export function Sectors() {
           return;
         }
 
-        // Sin ScrollTrigger: esta cabecera es lo primero de la página, así que
-        // entra al cargar como el hero, no al llegar a ella.
         tl = gsap.timeline({ delay: ENTRANCE.tagline });
 
         if (badge) {
@@ -100,7 +93,6 @@ export function Sectors() {
         );
       };
 
-      // Oculto desde ya; se revela cuando la cortina se haya ido.
       if (covering) return;
 
       const fonts = document.fonts?.ready ?? Promise.resolve();
@@ -122,22 +114,10 @@ export function Sectors() {
       />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-        {/* --- Cabecera ---
-            pt generoso: el navbar es fijo y esta es la primera página, no hay
-            un hero que haga de colchón como en la home. */}
         <div
           ref={headerRef}
           className="relative pt-[140px] pb-16 lg:pt-[180px]"
         >
-          {/* Raíles laterales: dos cintas verticales con los sectores, en
-              sentidos opuestos. Rellenan los costados que deja el texto
-              centrado y repiten el tema de la página sin competir con él —
-              por eso van a muy baja opacidad.
-
-              Reusan la cinta de Distribuidores girada 90°: su ancho pasa a ser
-              el recorrido vertical, de ahí el `w-[160vh]`. Decorativas del
-              todo: `pointer-events-none`, así que los enlaces de dentro no
-              son un blanco móvil. */}
           {(["left", "right"] as const).map((side) => (
             <div
               key={side}
@@ -146,8 +126,7 @@ export function Sectors() {
                 "pointer-events-none absolute inset-y-20 hidden w-12 overflow-hidden text-foreground/15 lg:block",
                 side === "left" ? "-left-4 lg:-left-8" : "-right-4 lg:-right-8",
               )}
-              // Desvanecido arriba y abajo, para que las palabras no aparezcan
-              // ni desaparezcan con un corte seco en los extremos del raíl.
+
               style={{
                 maskImage: RAIL_MASK,
                 maskRepeat: "no-repeat",
@@ -197,8 +176,6 @@ export function Sectors() {
               {sectorsIntro.body}
             </p>
 
-            {/* Índice: sirve para que el visitante se identifique de un vistazo
-                —"soy una notaría"— y salte directo a lo suyo. */}
             <nav
               aria-label="Sectores"
               className="mt-10 flex flex-wrap justify-center gap-2"
@@ -220,10 +197,6 @@ export function Sectors() {
           </div>
         </div>
 
-        {/* --- Los sectores --- */}
-        {/* La etiqueta encabeza el grupo: va DEBAJO del divisor, para que se
-            lea como título de los bloques y no como el final de la cabecera.
-            El primer bloque va sin su propio divisor, o salen dos líneas. */}
         <div className="border-t border-foreground/15" />
         <div className="flex items-center gap-3 pt-16 pb-10">
           <IconBadge icon={Check} size="sm" variant="brand" />
@@ -242,10 +215,8 @@ export function Sectors() {
           />
         ))}
 
-        {/* --- Casos de uso por plataforma --- */}
         <UseCases />
 
-        {/* --- Cierre --- */}
         <div className="border-t border-foreground/15 py-20 lg:py-28">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-neue-bold text-title leading-[1.02] tracking-tight text-balance">

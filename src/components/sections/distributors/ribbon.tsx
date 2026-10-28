@@ -7,16 +7,12 @@ import { cx } from "@/components/ui/icon-glyph-styles";
 
 gsap.registerPlugin(useGSAP);
 
-/**
- * Píxeles por segundo. Al derivar la duración del ancho real del contenido, dos
- * cintas con distinto número de frases se mueven a la misma velocidad.
- */
 const SPEED = 55;
 
 type RibbonProps = {
   items: string[];
   href: string;
-  /** true = se desplaza hacia la derecha. */
+
   reverse?: boolean;
   className?: string;
 };
@@ -44,8 +40,6 @@ export function Ribbon({
       const run = () => {
         if (!trackRef.current) return;
 
-        // El contenido va DUPLICADO: recorrer el 50% del track deja un frame
-        // idéntico al inicial, así que el bucle no tiene costura visible.
         const half = track.scrollWidth / 2;
         if (!half) return;
 
@@ -57,8 +51,6 @@ export function Ribbon({
           : gsap.to(track, { xPercent: -50, ...vars });
       };
 
-      // Espera a las fuentes: `scrollWidth` antes de que carguen mide de más o
-      // de menos, y la velocidad saldría mal.
       const fonts = document.fonts?.ready ?? Promise.resolve();
       fonts.then(run);
 
@@ -73,10 +65,9 @@ export function Ribbon({
   return (
     <div
       ref={rootRef}
-      // La cinta recorta su propio contenido: el track es más ancho que la
-      // pantalla y sin esto provocaría scroll horizontal en toda la página.
+
       className={cx("overflow-hidden", className)}
-      // Se pausa al pasar el cursor, que si no los enlaces son un blanco móvil.
+
       onMouseEnter={() => tweenRef.current?.pause()}
       onMouseLeave={() => tweenRef.current?.play()}
     >
@@ -84,8 +75,7 @@ export function Ribbon({
         {[0, 1].map((copy) => (
           <div
             key={copy}
-            // La segunda copia solo existe para el bucle: fuera del árbol de
-            // accesibilidad y fuera del tabulador.
+
             aria-hidden={copy === 1}
             className="flex shrink-0"
           >
@@ -98,8 +88,7 @@ export function Ribbon({
                 >
                   {item}
                 </a>
-                {/* Separador: rombo, que hace eco de la geometría hexagonal
-                    del logo sin meter otra imagen por cada frase. */}
+
                 <span
                   aria-hidden
                   className="size-1.5 shrink-0 rotate-45 bg-current"
