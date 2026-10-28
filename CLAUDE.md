@@ -10,6 +10,15 @@ alguien de Bloxtek.
 - **Metadatos por defecto.** `src/app/layout.tsx` sigue con el `title` y la
   `description` de la plantilla ("Create Next App"). Falta también sitemap,
   robots y Open Graph — es el mayor retorno de SEO por el esfuerzo que cuesta.
+- **El panel de Nosotros tiene credenciales falsas.**
+  `layout/about-panel.tsx` viene de la plantilla y sigue con SUS datos, no los
+  de Bloxtek: lista como clientes a Vinamilk, Moc Chau Creamery, OH
+  Architecture, Supersolid y la University of Sydney, y como premios Awwwards
+  SOTD (x5), FWA SOTD (x5) y CSSDA SOTD (x5). Son empresas y galardones reales
+  de otra agencia. Publicarlo es atribuirse clientes y premios ajenos, así que
+  esto no es "copy sin validar": o se sustituye por datos reales o el panel no
+  sale. El texto de presentación también está en inglés, a diferencia del resto
+  de la web.
 - **El formulario de contacto no envía a ningún lado.**
   `sections/contact/form.tsx` solo pasa a la pantalla de confirmación. Falta
   decidir destino (endpoint propio, Formspree, Resend, HubSpot…) y conectarlo.
@@ -43,22 +52,15 @@ Lo más sensible:
 
 ## Deuda conocida
 
-- **Secciones fuera del render**, comentadas en `src/app/page.tsx` con sus
-  componentes intactos: `about`, `organizations`, `works`, `services`,
-  `process`, `meeting`. Si se decide que no vuelven, se borran y se deduplica
-  el slider (`ui/stat-slider.tsx` repite la lógica que sigue dentro de
-  `about/index.tsx`).
 - **La landing original está en la rama `landing-original`** (commit
-  `f49b96c`), entera y renderizándose. O sea que las secciones comentadas de
-  `page.tsx` ya no son la única copia y se pueden borrar sin perder nada.
-- **`meeting` salió del render** y con ella `ui/schedule-card.tsx` y
-  `ui/stat-slider.tsx` se quedaron sin usar en toda la web. La tarjeta del
-  calendario merece volver, pero DENTRO de `contact`, como alternativa directa
-  al formulario: ahí el visitante ya tiene contexto, y `contact/slides.ts` ya
-  tiene los tres pasos de la llamada. Arriba del pliegue pedía la reunión antes
-  de explicar nada.
-- `sections/organizations/slides.ts` apunta a `logo1/2/3.png`, que ya no
-  existen. No rompe nada porque la sección está comentada.
+  `f49b96c`) y el estado previo a la limpieza en la etiqueta `pre-limpieza`.
+  De ahí salen las secciones del diseño anterior —about, organizations, works,
+  services, process— y la de meeting, que se borraron del árbol.
+- **La tarjeta del calendario (`ui/schedule-card.tsx`) merece volver**, pero
+  DENTRO de `contact`, como alternativa directa al formulario: ahí el visitante
+  ya tiene contexto, y `contact/slides.ts` ya tiene los tres pasos de la
+  llamada. Arriba del pliegue pedía la reunión antes de explicar nada. Está en
+  `pre-limpieza` junto con `ui/calendar.tsx`, que es lo que pinta los días.
 - `ui/animated-text.tsx` tiene el único error de lint del proyecto
   (`react-hooks/refs`), anterior a estos cambios.
 - Los logos desvanecidos de Trust son PNG con el color quemado dentro. Se

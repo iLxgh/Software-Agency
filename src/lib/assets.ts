@@ -4,15 +4,8 @@
  */
 export const images = {
   hero: "/images/hero",
-  gallery: "/images/gallery",
-  logos: "/images/logos",
-  icons: "/images/icons",
   general: "/images/general",
-  founder: "/images/about",
   organizations: "/images/organizations",
-  works: "/images/works",
-  services: "/images/services",
-  cards: "/images/cards",
   cube: "/images/cube",
   fadedLogo: "/images/logo-desvanecido",
   ia: "/images/ia",
